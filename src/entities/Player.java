@@ -12,17 +12,29 @@ public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    public final int screenX;
+    public final int screenY;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+
+        screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize / 2);
+        screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize / 2);
+
+        solidArea = new Rectangle();
+        solidArea.x = 20;
+        solidArea.y = 14;
+        solidArea.width = 22;
+        solidArea.height = 40;
 
         setDefaultVariables();
         loadPlayerSprites();
     }
 
     private void setDefaultVariables() {
-        this.x = 100;
-        this.y = 100;
+        this.worldX = gamePanel.tileSize;
+        this.worldY = gamePanel.tileSize;
         this.speed = 4;
         this.isMoving = false;
         this.direction = Direction.DOWN;
@@ -62,43 +74,58 @@ public class Player extends Entity {
                 isMoving = true;
                 this.direction = Direction.UP;
                 this.lastDirection = Direction.UP;
-                this.y -= this.speed;
             } else if (keyHandler.downPressed) {
                 isMoving = true;
                 this.direction = Direction.DOWN;
                 this.lastDirection = Direction.DOWN;
-                this.y += this.speed;
             } else if (keyHandler.leftPressed) {
                 isMoving = true;
                 this.direction = Direction.LEFT;
                 this.lastDirection = Direction.LEFT;
-                this.x -= this.speed;
             } else if (keyHandler.rightPressed) {
                 isMoving = true;
                 this.direction = Direction.RIGHT;
                 this.lastDirection = Direction.RIGHT;
-                this.x += this.speed;
+            }
+
+            // CHECK PLAYER COLLISION
+            collisionOn = false;
+            gamePanel.collisionChecker.checkTile(this);
+
+            if (!collisionOn) {
+                switch (direction) {
+                    case UP -> worldY -= speed;
+                    case DOWN -> worldY += speed;
+                    case LEFT -> worldX -= speed;
+                    case RIGHT -> worldX += speed;
+                }
+            }
+
+            spriteCounter++;
+            if (spriteCounter > 10) {
+                spriteCounter = 0;
+                spriteNum++;
+
+                if (spriteNum > 8) {
+                    spriteNum = 1;
+                }
             }
 
         } else {
             isMoving = false;
-        }
 
-        spriteCounter++;
-        if (spriteCounter > 10) {
-            spriteCounter = 0;
-            spriteNum++;
+            spriteCounter++;
+            if (spriteCounter > 10) {
+                spriteCounter = 0;
+                spriteNum++;
 
-            if (isMoving) {
-                if (spriteNum > 8) {
-                    spriteNum = 1;
-                }
-            } else {
                 if (spriteNum > 4) {
                     spriteNum = 1;
                 }
             }
         }
+
+
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -121,9 +148,9 @@ public class Player extends Entity {
             }
         }
 
-        graphics2D.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 
-        graphics2D.setColor(Color.CYAN);
-        graphics2D.drawRect(x, y, gamePanel.tileSize, gamePanel.tileSize);
+        graphics2D.setColor(Color.RED);
+        graphics2D.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
     }
 }
