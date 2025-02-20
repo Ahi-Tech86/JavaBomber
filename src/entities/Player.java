@@ -24,6 +24,7 @@ public class Player extends Entity {
         this.x = 100;
         this.y = 100;
         this.speed = 4;
+        this.isMoving = false;
         this.direction = Direction.DOWN;
         this.lastDirection = Direction.DOWN;
     }
@@ -55,22 +56,32 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyHandler.upPressed) {
-            this.direction = Direction.UP;
-            this.lastDirection = Direction.UP;
-            this.y -= this.speed;
-        } else if (keyHandler.downPressed) {
-            this.direction = Direction.DOWN;
-            this.lastDirection = Direction.DOWN;
-            this.y += this.speed;
-        } else if (keyHandler.leftPressed) {
-            this.direction = Direction.LEFT;
-            this.lastDirection = Direction.LEFT;
-            this.x -= this.speed;
-        } else if (keyHandler.rightPressed) {
-            this.direction = Direction.RIGHT;
-            this.lastDirection = Direction.RIGHT;
-            this.x += this.speed;
+        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+
+            if (keyHandler.upPressed) {
+                isMoving = true;
+                this.direction = Direction.UP;
+                this.lastDirection = Direction.UP;
+                this.y -= this.speed;
+            } else if (keyHandler.downPressed) {
+                isMoving = true;
+                this.direction = Direction.DOWN;
+                this.lastDirection = Direction.DOWN;
+                this.y += this.speed;
+            } else if (keyHandler.leftPressed) {
+                isMoving = true;
+                this.direction = Direction.LEFT;
+                this.lastDirection = Direction.LEFT;
+                this.x -= this.speed;
+            } else if (keyHandler.rightPressed) {
+                isMoving = true;
+                this.direction = Direction.RIGHT;
+                this.lastDirection = Direction.RIGHT;
+                this.x += this.speed;
+            }
+
+        } else {
+            isMoving = false;
         }
 
         spriteCounter++;
@@ -78,21 +89,41 @@ public class Player extends Entity {
             spriteCounter = 0;
             spriteNum++;
 
-            if (spriteNum > 8) {
-                spriteNum = 1;
+            if (isMoving) {
+                if (spriteNum > 8) {
+                    spriteNum = 1;
+                }
+            } else {
+                if (spriteNum > 4) {
+                    spriteNum = 1;
+                }
             }
         }
     }
 
     public void draw(Graphics2D graphics2D) {
-        BufferedImage image = switch (direction) {
-            case Direction.UP -> walkUp[spriteNum - 1];
-            case Direction.DOWN -> walkDown[spriteNum - 1];
-            case Direction.LEFT -> walkLeft[spriteNum - 1];
-            case Direction.RIGHT -> walkRight[spriteNum - 1];
-            default -> null;
-        };
+        BufferedImage image = null;
+
+        if (isMoving) {
+            switch (direction) {
+                case Direction.UP -> image = walkUp[spriteNum - 1];
+                case Direction.DOWN -> image = walkDown[spriteNum - 1];
+                case Direction.LEFT -> image = walkLeft[spriteNum - 1];
+                case Direction.RIGHT -> image = walkRight[spriteNum - 1];
+            }
+
+        } else {
+            switch (lastDirection) {
+                case Direction.UP -> image = idleUp[spriteNum - 1];
+                case Direction.DOWN -> image = idleDown[spriteNum - 1];
+                case Direction.LEFT -> image = idleLeft[spriteNum - 1];
+                case Direction.RIGHT -> image = idleRight[spriteNum - 1];
+            }
+        }
 
         graphics2D.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+
+        graphics2D.setColor(Color.CYAN);
+        graphics2D.drawRect(x, y, gamePanel.tileSize, gamePanel.tileSize);
     }
 }
