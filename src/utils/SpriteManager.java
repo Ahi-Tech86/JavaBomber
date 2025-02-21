@@ -42,14 +42,14 @@ public class SpriteManager {
 
     public static void main(String[] args) {
         cropAndSaveSprites(
-                loadImage("/CATSPRITESHEET_Gray.png"),
+                loadImage("/objects/dynamite.png"),
                 32,
                 32,
-                11,
                 0,
-                4,
-                8,
-                "walk_up"
+                0,
+                3,
+                9,
+                "dynamite"
         );
     }
 }
