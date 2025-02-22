@@ -17,6 +17,9 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    private int throwCooldown;
+    private int throwCounter;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
@@ -29,6 +32,9 @@ public class Player extends Entity {
         solidArea.y = 14;
         solidArea.width = 22;
         solidArea.height = 40;
+
+        throwCooldown = 20;
+        throwCounter = 0;
 
         setDefaultVariables();
         loadPlayerSprites();
@@ -70,10 +76,15 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyHandler.ePressed) {
+        if (throwCounter > 0) {
+            throwCounter--;
+        }
+
+        if (keyHandler.ePressed && throwCounter == 0) {
             for (int i = 0; i < gamePanel.explosiveList.length; i++) {
                 if (gamePanel.explosiveList[i] == null) {
                     gamePanel.explosiveList[i] = new DynamitePack(this.worldX, this.worldY, gamePanel);
+                    throwCounter = throwCooldown;
                     break;
                 }
             }

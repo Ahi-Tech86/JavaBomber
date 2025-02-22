@@ -9,6 +9,7 @@ public class DynamitePack extends ExplosiveEntity {
 
     public DynamitePack(int worldX, int worldY, GamePanel gamePanel) {
         super(worldX, worldY, gamePanel);
+        this.explosionArea = 2;
         this.explosionTimer = 90;
         this.isExploded = false;
         this.explosionFrames = new BufferedImage[]{
@@ -27,10 +28,15 @@ public class DynamitePack extends ExplosiveEntity {
     protected void explode() {
         isExploded = true;
 
-        for (int x = -2; x <= 2; x++) {
-            for (int y = -2; y <= 2; y++) {
-                createExplosionEffect(worldX + x * gamePanel.tileSize, worldY + y * gamePanel.tileSize);
-            }
-        }
+        createExplosionEffect(worldX, worldY);
+
+        // RIGHT DIRECTION
+        propagateExplosion(1, 0);
+        // LEFT DIRECTION
+        propagateExplosion(-1, 0);
+        // UP DIRECTION
+        propagateExplosion(0, -1);
+        // DOWN DIRECTION
+        propagateExplosion(0, 1);
     }
 }

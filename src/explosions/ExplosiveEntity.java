@@ -12,6 +12,7 @@ public class ExplosiveEntity {
     protected int worldX;
     protected int worldY;
     public boolean isExploded;
+    protected byte explosionArea;
     protected int explosionTimer;
 
     protected int spriteNum = 1;
@@ -71,6 +72,19 @@ public class ExplosiveEntity {
                     break;
                 }
             }
+        }
+    }
+
+    protected void propagateExplosion(int dx, int dy) {
+        for (int i = 1; i <= explosionArea; i++) {
+            int targetX = worldX + i * dx * gamePanel.tileSize;
+            int targetY = worldY + i * dy * gamePanel.tileSize;
+
+            if (gamePanel.collisionChecker.checkTileSolidity(targetX, targetY)) {
+                break;
+            }
+
+            createExplosionEffect(targetX, targetY);
         }
     }
 }
