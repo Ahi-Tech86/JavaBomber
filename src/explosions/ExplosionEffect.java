@@ -37,7 +37,7 @@ public class ExplosionEffect {
         }
 
         spriteCounter++;
-        if (spriteCounter > 10) {
+        if (spriteCounter > 15) {
             spriteNum++;
             spriteCounter = 0;
 

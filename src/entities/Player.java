@@ -84,6 +84,7 @@ public class Player extends Entity {
             for (int i = 0; i < gamePanel.explosiveList.length; i++) {
                 if (gamePanel.explosiveList[i] == null) {
                     gamePanel.explosiveList[i] = new DynamitePack(this.worldX, this.worldY, gamePanel);
+                    gamePanel.playSE(1);
                     throwCounter = throwCooldown;
                     break;
                 }

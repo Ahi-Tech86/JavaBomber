@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     // SYSTEM
     Thread gameThread;
+    Sound se = new Sound();
+    Sound music = new Sound();
     KeyHandler keyHandler = new KeyHandler();
     TileManager tileManager = new TileManager(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -152,5 +154,20 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(graphics2D);
 
         graphics2D.dispose();
+    }
+
+    public void setMusic(int i) {
+        music.setFile(i);
+        music.play();
+        music.loop();
+    }
+
+    public void stopMusic() {
+        music.stop();
+    }
+
+    public void playSE(int i) {
+        se.setFile(i);
+        se.play();
     }
 }

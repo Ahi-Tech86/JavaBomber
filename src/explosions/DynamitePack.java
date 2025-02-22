@@ -38,5 +38,7 @@ public class DynamitePack extends ExplosiveEntity {
         propagateExplosion(0, -1);
         // DOWN DIRECTION
         propagateExplosion(0, 1);
+
+        gamePanel.playSE(0);
     }
 }
