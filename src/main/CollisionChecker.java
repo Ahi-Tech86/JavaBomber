@@ -63,4 +63,25 @@ public class CollisionChecker {
                 break;
         }
     }
+
+    public boolean checkTileSolidity(int worldX, int worldY) {
+        int explosionCol = worldX / gamePanel.tileSize;
+        int explosionRow = worldY / gamePanel.tileSize;
+
+        if (
+                explosionCol >= gamePanel.maxWorldCol ||
+                explosionRow >= gamePanel.maxWorldRow ||
+                explosionRow < 0 || explosionCol < 0
+        ) {
+            return true;
+        }
+
+        int tileNum = gamePanel.tileManager.mapTileNum[explosionCol][explosionRow];
+
+        if (gamePanel.tileManager.tileset[tileNum].collision) {
+            return true;
+        }
+
+        return false;
+    }
 }

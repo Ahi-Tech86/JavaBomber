@@ -1,6 +1,8 @@
 package main;
 
 import entities.Player;
+import explosions.ExplosionEffect;
+import explosions.ExplosiveEntity;
 import objects.SuperObject;
 import tile.TileManager;
 
@@ -37,6 +39,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyHandler);
 
     public SuperObject[] objectsList = new SuperObject[10];
+    public ExplosiveEntity[] explosiveList = new ExplosiveEntity[10];
+    public ExplosionEffect[] explosionEffectsList = new ExplosionEffect[100];
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -81,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= oneSecond) {
-                System.out.println("FPS: " + drawCount);
+                //System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -94,6 +98,26 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update();
+
+        for (int i = 0; i < explosiveList.length; i++) {
+            if (explosiveList[i] != null) {
+                if (!explosiveList[i].isExploded) {
+                    explosiveList[i].update();
+                } else {
+                    explosiveList[i] = null;
+                }
+            }
+        }
+
+        for (int i = 0; i < explosionEffectsList.length; i++) {
+            if (explosionEffectsList[i] != null) {
+                if (explosionEffectsList[i].isActive) {
+                    explosionEffectsList[i].update();
+                } else {
+                    explosionEffectsList[i] = null;
+                }
+            }
+        }
     }
 
     public void paintComponent(Graphics graphics) {
@@ -107,6 +131,20 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < objectsList.length; i++) {
             if (objectsList[i] != null) {
                 objectsList[i].draw(graphics2D, this);
+            }
+        }
+
+        // EXPLOSIVE
+        for (int i = 0; i < explosiveList.length; i++) {
+            if (explosiveList[i] != null) {
+                explosiveList[i].draw(graphics2D, this);
+            }
+        }
+
+        // EXPLOSION EFFECTS
+        for (int i = 0; i < explosionEffectsList.length; i++) {
+            if (explosionEffectsList[i] != null) {
+                explosionEffectsList[i].draw(graphics2D, this);
             }
         }
 

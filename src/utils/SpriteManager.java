@@ -42,14 +42,14 @@ public class SpriteManager {
 
     public static void main(String[] args) {
         cropAndSaveSprites(
-                loadImage("/objects/dynamite.png"),
+                loadImage("/effects/explosion.png"),
                 32,
                 32,
                 0,
                 0,
                 3,
-                9,
-                "dynamite"
+                6,
+                "explosion"
         );
     }
 }

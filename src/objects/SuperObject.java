@@ -18,9 +18,9 @@ public class SuperObject {
 
         if (
                 worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
-                        worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-                        worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
-                        worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY
+                worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
+                worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
+                worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY
         ) {
             graphics2D.drawImage(image, screenX + 16, screenY + 16, gamePanel.tileSize / 2, gamePanel.tileSize / 2, null);
         }

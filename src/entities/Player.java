@@ -1,5 +1,7 @@
 package entities;
 
+import explosions.Dynamite;
+import explosions.DynamitePack;
 import main.GamePanel;
 import main.KeyHandler;
 import utils.SpriteManager;
@@ -68,6 +70,15 @@ public class Player extends Entity {
     }
 
     public void update() {
+        if (keyHandler.ePressed) {
+            for (int i = 0; i < gamePanel.explosiveList.length; i++) {
+                if (gamePanel.explosiveList[i] == null) {
+                    gamePanel.explosiveList[i] = new DynamitePack(this.worldX, this.worldY, gamePanel);
+                    break;
+                }
+            }
+        }
+
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 
             if (keyHandler.upPressed) {
@@ -114,6 +125,10 @@ public class Player extends Entity {
         } else {
             isMoving = false;
 
+            if (spriteNum > 4) {
+                spriteNum = 1;
+            }
+
             spriteCounter++;
             if (spriteCounter > 10) {
                 spriteCounter = 0;
@@ -124,8 +139,6 @@ public class Player extends Entity {
                 }
             }
         }
-
-
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -149,7 +162,9 @@ public class Player extends Entity {
         }
 
         graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+    }
 
+    private void drawCheckBox(Graphics2D graphics2D) {
         graphics2D.setColor(Color.RED);
         graphics2D.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
     }
