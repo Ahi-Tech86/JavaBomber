@@ -1,12 +1,12 @@
 package explosions;
 
 import main.GamePanel;
-import observer.Observer;
+import observer.UpdatableObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ExplosiveEntity implements Observer {
+public class ExplosiveEntity implements UpdatableObserver {
 
     public GamePanel gamePanel;
 

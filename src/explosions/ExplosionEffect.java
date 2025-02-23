@@ -1,13 +1,13 @@
 package explosions;
 
 import main.GamePanel;
-import observer.Observer;
+import observer.UpdatableObserver;
 import utils.SpriteManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ExplosionEffect implements Observer {
+public class ExplosionEffect implements UpdatableObserver {
 
     public boolean isActive = true;
     GamePanel gamePanel;

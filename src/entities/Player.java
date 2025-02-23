@@ -3,13 +3,13 @@ package entities;
 import explosions.DynamitePack;
 import main.GamePanel;
 import main.KeyHandler;
-import observer.Observer;
+import observer.UpdatableObserver;
 import utils.SpriteManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Player extends Entity implements Observer {
+public class Player extends Entity implements UpdatableObserver {
 
     GamePanel gamePanel;
     KeyHandler keyHandler;

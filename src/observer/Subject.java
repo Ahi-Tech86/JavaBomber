@@ -5,19 +5,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public interface Subject {
 
-    List<Observer> observers = new CopyOnWriteArrayList<>();
+    List<UpdatableObserver> UPDATABLE_OBSERVERS = new CopyOnWriteArrayList<>();
 
-    default void addObserver(Observer observer) {
-        observers.add(observer);
+    default void addObserver(UpdatableObserver updatableObserver) {
+        UPDATABLE_OBSERVERS.add(updatableObserver);
     }
 
-    default void removeObserver(Observer observer) {
-        observers.remove(observer);
+    default void removeObserver(UpdatableObserver updatableObserver) {
+        UPDATABLE_OBSERVERS.remove(updatableObserver);
     }
 
     default void notifyObservers() {
-        for (Observer observer : observers) {
-            observer.update();
+        for (UpdatableObserver updatableObserver : UPDATABLE_OBSERVERS) {
+            updatableObserver.update();
         }
     }
 }

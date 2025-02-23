@@ -35,15 +35,22 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     Thread gameThread;
     Sound se = new Sound();
     Sound music = new Sound();
-    KeyHandler keyHandler = new KeyHandler();
+    UserInterface userInterface = new UserInterface(this);
+    KeyHandler keyHandler = new KeyHandler(this);
     TileManager tileManager = new TileManager(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this);
     public Player player = new Player(this, keyHandler);
 
+    // OBJECTS AND ENTITIES
     public SuperObject[] objectsList = new SuperObject[10];
     public List<ExplosionEffect> explosionEffectList = new ArrayList<>();
     public List<ExplosiveEntity> explosiveEntityList = new ArrayList<>();
+
+    // STATES
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -96,13 +103,15 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     }
 
     public void setupGame() {
+        gameState = playState;
         assetSetter.setObjects();
-
         addObserver(player);
     }
 
     public void update() {
-        notifyObservers();
+        if (gameState == playState) {
+            notifyObservers();
+        }
     }
 
     public void paintComponent(Graphics graphics) {
@@ -139,6 +148,8 @@ public class GamePanel extends JPanel implements Runnable, Subject {
 
         // PLAYER
         player.draw(graphics2D);
+
+        userInterface.draw(graphics2D);
 
         long drawEnd = System.nanoTime();
         long passed = drawEnd - drawStart;
