@@ -61,18 +61,27 @@ public class Player extends Entity {
         walkRight = new BufferedImage[8];
 
         for (int i = 0; i < 4; i++) {
-            idleUp[i] = SpriteManager.loadImage("/character/idle/idle_up_" + i + ".png");
-            idleDown[i] = SpriteManager.loadImage("/character/idle/idle_down_" + i + ".png");
-            idleLeft[i] = SpriteManager.loadImage("/character/idle/idle_left_" + i + ".png");
-            idleRight[i] = SpriteManager.loadImage("/character/idle/idle_right_" + i + ".png");
+            idleUp[i] = processSprite("/character/idle/idle_up_" + i + ".png");
+            idleDown[i] = processSprite("/character/idle/idle_down_" + i + ".png");
+            idleLeft[i] = processSprite("/character/idle/idle_left_" + i + ".png");
+            idleRight[i] = processSprite("/character/idle/idle_right_" + i + ".png");
         }
 
         for (int i = 0; i < 8; i++) {
-            walkUp[i] = SpriteManager.loadImage("/character/walk/walk_up_" + i + ".png");
-            walkDown[i] = SpriteManager.loadImage("/character/walk/walk_down_" + i + ".png");
-            walkLeft[i] = SpriteManager.loadImage("/character/walk/walk_left_" + i + ".png");
-            walkRight[i] = SpriteManager.loadImage("/character/walk/walk_right_" + i + ".png");
+            walkUp[i] = processSprite("/character/walk/walk_up_" + i + ".png");
+            walkDown[i] = processSprite("/character/walk/walk_down_" + i + ".png");
+            walkLeft[i] = processSprite("/character/walk/walk_left_" + i + ".png");
+            walkRight[i] = processSprite("/character/walk/walk_right_" + i + ".png");
         }
+    }
+
+    private BufferedImage processSprite(String spritePath) {
+        BufferedImage scaledImage = null;
+
+        scaledImage = SpriteManager.loadImage(spritePath);
+        scaledImage = SpriteManager.scaleImage(scaledImage, gamePanel.tileSize, gamePanel.tileSize);
+
+        return scaledImage;
     }
 
     public void update() {
@@ -173,7 +182,7 @@ public class Player extends Entity {
             }
         }
 
-        graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+        graphics2D.drawImage(image, screenX, screenY, null);
     }
 
     private void drawCheckBox(Graphics2D graphics2D) {

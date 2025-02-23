@@ -68,7 +68,7 @@ public class ExplosiveEntity {
         for (int i = 0; i < gamePanel.explosionEffectsList.length; i++) {
             if (gamePanel.explosionEffectsList[i] == null) {
                 if (!gamePanel.collisionChecker.checkTileSolidity(worldX, worldY)) {
-                    gamePanel.explosionEffectsList[i] = new ExplosionEffect(worldX, worldY);
+                    gamePanel.explosionEffectsList[i] = new ExplosionEffect(gamePanel, worldX, worldY);
                     break;
                 }
             }

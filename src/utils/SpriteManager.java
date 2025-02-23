@@ -1,6 +1,7 @@
 package utils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +16,25 @@ public class SpriteManager {
         }
 
         return null;
+    }
+
+    public static BufferedImage scaleImage(BufferedImage defaultImage, int scaleWidth, int scaleHeight) {
+        BufferedImage scaledImage = new BufferedImage(scaleWidth, scaleHeight, defaultImage.getType());
+        Graphics2D graphics2D = scaledImage.createGraphics();
+        graphics2D.drawImage(defaultImage, 0, 0, scaleWidth, scaleHeight, null);
+        graphics2D.dispose();
+
+        return scaledImage;
+    }
+
+    public static BufferedImage[] loadAndSaveSpriteFrames(String[] paths, int width, int height) {
+        BufferedImage[] frames = new BufferedImage[paths.length];
+
+        for (int i = 0; i < paths.length; i++) {
+            frames[i] = scaleImage(loadImage(paths[i]), width, height);
+        }
+
+        return frames;
     }
 
     public static void cropAndSaveSprites(

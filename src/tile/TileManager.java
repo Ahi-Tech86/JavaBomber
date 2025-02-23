@@ -25,12 +25,15 @@ public class TileManager {
     }
 
     private void getTileImage() {
-        tileset[0] = new Tile();
-        tileset[0].image = SpriteManager.loadImage("/tileset/road00.png");
+        setup(0, "/tileset/road00.png", false);
+        setup(1, "/tileset/wall.png", true);
+    }
 
-        tileset[1] = new Tile();
-        tileset[1].image = SpriteManager.loadImage("/tileset/wall.png");
-        tileset[1].collision = true;
+    private void setup(int index, String imagePath, boolean collision) {
+        tileset[index] = new Tile();
+        tileset[index].image = SpriteManager.loadImage(imagePath);
+        tileset[index].image = SpriteManager.scaleImage(tileset[index].image, gamePanel.tileSize, gamePanel.tileSize);
+        tileset[index].collision = collision;
     }
 
     private void loadMap(String filePath) {
@@ -84,7 +87,7 @@ public class TileManager {
                     worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
                     worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY
             ) {
-                graphics2D.drawImage(tileset[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+                graphics2D.drawImage(tileset[tileNum].image, screenX, screenY, null);
             }
 
             worldCol++;

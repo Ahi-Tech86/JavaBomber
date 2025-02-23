@@ -16,5 +16,6 @@ public class Key extends SuperObject {
         this.worldX = worldX;
         this.worldY = worldY;
         image = SpriteManager.loadImage("/objects/key/key_0.png");
+        image = SpriteManager.scaleImage(image, tileSizeHalf, tileSizeHalf);
     }
 }
