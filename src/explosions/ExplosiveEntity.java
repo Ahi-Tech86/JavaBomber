@@ -1,11 +1,12 @@
 package explosions;
 
 import main.GamePanel;
+import observer.Observer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ExplosiveEntity {
+public class ExplosiveEntity implements Observer {
 
     public GamePanel gamePanel;
 
@@ -42,37 +43,39 @@ public class ExplosiveEntity {
         );
     }
 
+    @Override
     public void update() {
-        if (explosionTimer > 0) {
-            explosionTimer--;
-        } else if (!isExploded) {
-            explode();
-        }
-
-        spriteCounter++;
-        if (spriteCounter > 10) {
-            spriteCounter = 0;
-            spriteNum++;
-
-            if (spriteNum > explosionFrames.length) {
-                spriteNum = 1;
-                spriteCounter = 0;
+        if (!isExploded) {
+            if (explosionTimer > 0) {
+                explosionTimer--;
+            } else if (!isExploded) {
+                explode();
             }
+
+            spriteCounter++;
+            if (spriteCounter > 10) {
+                spriteCounter = 0;
+                spriteNum++;
+
+                if (spriteNum > explosionFrames.length) {
+                    spriteNum = 1;
+                    spriteCounter = 0;
+                }
+            }
+        } else {
+            gamePanel.removeObserver(this);
+            gamePanel.explosiveEntityList.remove(this);
         }
+
     }
 
     protected void explode() {
     }
 
     protected void createExplosionEffect(int worldX, int worldY) {
-        for (int i = 0; i < gamePanel.explosionEffectsList.length; i++) {
-            if (gamePanel.explosionEffectsList[i] == null) {
-                if (!gamePanel.collisionChecker.checkTileSolidity(worldX, worldY)) {
-                    gamePanel.explosionEffectsList[i] = new ExplosionEffect(gamePanel, worldX, worldY);
-                    break;
-                }
-            }
-        }
+        ExplosionEffect explosionEffect = new ExplosionEffect(gamePanel, worldX, worldY);
+        gamePanel.explosionEffectList.add(explosionEffect);
+        gamePanel.addObserver(explosionEffect);
     }
 
     protected void propagateExplosion(int dx, int dy) {

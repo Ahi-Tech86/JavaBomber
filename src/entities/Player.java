@@ -1,15 +1,15 @@
 package entities;
 
-import explosions.Dynamite;
 import explosions.DynamitePack;
 import main.GamePanel;
 import main.KeyHandler;
+import observer.Observer;
 import utils.SpriteManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Player extends Entity {
+public class Player extends Entity implements Observer {
 
     GamePanel gamePanel;
     KeyHandler keyHandler;
@@ -84,20 +84,18 @@ public class Player extends Entity {
         return scaledImage;
     }
 
+    @Override
     public void update() {
         if (throwCounter > 0) {
             throwCounter--;
         }
 
         if (keyHandler.ePressed && throwCounter == 0) {
-            for (int i = 0; i < gamePanel.explosiveList.length; i++) {
-                if (gamePanel.explosiveList[i] == null) {
-                    gamePanel.explosiveList[i] = new DynamitePack(this.worldX, this.worldY, gamePanel);
-                    gamePanel.playSE(1);
-                    throwCounter = throwCooldown;
-                    break;
-                }
-            }
+            DynamitePack dynamitePack = new DynamitePack(this.worldX, this.worldY, gamePanel);
+            gamePanel.explosiveEntityList.add(dynamitePack);
+            gamePanel.addObserver(dynamitePack);
+            gamePanel.playSE(1);
+            throwCounter = throwCooldown;
         }
 
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {

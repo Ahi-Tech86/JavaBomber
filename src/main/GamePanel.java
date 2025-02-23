@@ -4,12 +4,15 @@ import entities.Player;
 import explosions.ExplosionEffect;
 import explosions.ExplosiveEntity;
 import objects.SuperObject;
+import observer.Subject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable, Subject {
 
     // SCREEN SETTINGS
     final int scale = 4;
@@ -24,8 +27,6 @@ public class GamePanel extends JPanel implements Runnable {
     // WORLD SETTINGS
     public final int maxWorldCol = 32;
     public final int maxWorldRow = 14;
-    public final int worldWidth = maxWorldCol * tileSize;
-    public final int worldHeight = maxWorldRow * tileSize;
 
     // FPS
     final int FPS = 60;
@@ -41,8 +42,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyHandler);
 
     public SuperObject[] objectsList = new SuperObject[10];
-    public ExplosiveEntity[] explosiveList = new ExplosiveEntity[10];
-    public ExplosionEffect[] explosionEffectsList = new ExplosionEffect[100];
+    public List<ExplosionEffect> explosionEffectList = new ArrayList<>();
+    public List<ExplosiveEntity> explosiveEntityList = new ArrayList<>();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -96,30 +97,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
         assetSetter.setObjects();
+
+        addObserver(player);
     }
 
     public void update() {
-        player.update();
-
-        for (int i = 0; i < explosiveList.length; i++) {
-            if (explosiveList[i] != null) {
-                if (!explosiveList[i].isExploded) {
-                    explosiveList[i].update();
-                } else {
-                    explosiveList[i] = null;
-                }
-            }
-        }
-
-        for (int i = 0; i < explosionEffectsList.length; i++) {
-            if (explosionEffectsList[i] != null) {
-                if (explosionEffectsList[i].isActive) {
-                    explosionEffectsList[i].update();
-                } else {
-                    explosionEffectsList[i] = null;
-                }
-            }
-        }
+        notifyObservers();
     }
 
     public void paintComponent(Graphics graphics) {
@@ -141,16 +124,16 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // EXPLOSIVE
-        for (int i = 0; i < explosiveList.length; i++) {
-            if (explosiveList[i] != null) {
-                explosiveList[i].draw(graphics2D, this);
+        for (int i = 0; i < explosiveEntityList.size(); i++) {
+            if (explosiveEntityList.get(i) != null) {
+                explosiveEntityList.get(i).draw(graphics2D, this);
             }
         }
 
-        // EXPLOSION EFFECTS
-        for (int i = 0; i < explosionEffectsList.length; i++) {
-            if (explosionEffectsList[i] != null) {
-                explosionEffectsList[i].draw(graphics2D, this);
+        // EFFECTS
+        for (int i = 0; i < explosionEffectList.size(); i++) {
+            if (explosionEffectList.get(i) != null) {
+                explosionEffectList.get(i).draw(graphics2D, this);
             }
         }
 
@@ -159,10 +142,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         long drawEnd = System.nanoTime();
         long passed = drawEnd - drawStart;
-        if (passed > 1500000) {
-            System.out.println(passed);
-        }
-
 
         graphics2D.dispose();
     }

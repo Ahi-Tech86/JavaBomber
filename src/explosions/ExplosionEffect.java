@@ -1,12 +1,13 @@
 package explosions;
 
 import main.GamePanel;
+import observer.Observer;
 import utils.SpriteManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ExplosionEffect {
+public class ExplosionEffect implements Observer {
 
     public boolean isActive = true;
     GamePanel gamePanel;
@@ -35,21 +36,28 @@ public class ExplosionEffect {
         effectFrames = SpriteManager.loadAndSaveSpriteFrames(effectPaths, gamePanel.tileSize, gamePanel.tileSize);
     }
 
+    @Override
     public void update() {
-        explosionEffectTimer--;
-        if (explosionEffectTimer == 0) {
-            isActive = false;
-        }
-
-        spriteCounter++;
-        if (spriteCounter > 15) {
-            spriteNum++;
-            spriteCounter = 0;
-
-            if (spriteNum > effectFrames.length) {
-                spriteNum = 1;
+        if (isActive) {
+            explosionEffectTimer--;
+            if (explosionEffectTimer == 0) {
+                isActive = false;
             }
+
+            spriteCounter++;
+            if (spriteCounter > 15) {
+                spriteNum++;
+                spriteCounter = 0;
+
+                if (spriteNum > effectFrames.length) {
+                    spriteNum = 1;
+                }
+            }
+        } else {
+            gamePanel.removeObserver(this);
+            gamePanel.explosionEffectList.remove(this);
         }
+
     }
 
     public void draw(Graphics2D graphics2D, GamePanel gamePanel) {
