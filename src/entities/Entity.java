@@ -1,10 +1,11 @@
 package entities;
 
+import main.GameObject;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Entity {
-    public int worldX, worldY;
+public class Entity extends GameObject {
     public int speed;
     public boolean isMoving;
     public Direction direction;
@@ -29,4 +30,8 @@ public class Entity {
     public BufferedImage[] walkDown;
     public BufferedImage[] walkLeft;
     public BufferedImage[] walkRight;
+
+    public Entity(int worldX, int worldY) {
+        super(worldX, worldY);
+    }
 }

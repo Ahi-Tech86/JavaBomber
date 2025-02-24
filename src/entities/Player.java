@@ -21,6 +21,7 @@ public class Player extends Entity implements UpdatableObserver {
     private int throwCounter;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
+        super(gamePanel.tileSize, gamePanel.tileSize);
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
 
@@ -160,7 +161,8 @@ public class Player extends Entity implements UpdatableObserver {
         }
     }
 
-    public void draw(Graphics2D graphics2D) {
+    @Override
+    public void draw(Graphics2D graphics2D, GamePanel gamePanel) {
         BufferedImage image = null;
 
         if (isMoving) {

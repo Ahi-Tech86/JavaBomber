@@ -4,13 +4,8 @@ import utils.SpriteManager;
 
 public class Key extends SuperObject {
 
-    public Key() {
-        name = "Key";
-        collision = false;
-        image = SpriteManager.loadImage("/objects/key/key_0.png");
-    }
-
     public Key(int worldX, int worldY) {
+        super(worldX, worldY);
         name = "Key";
         collision = false;
         this.worldX = worldX;

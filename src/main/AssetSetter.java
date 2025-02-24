@@ -11,8 +11,6 @@ public class AssetSetter {
     }
 
     public void setObjects() {
-        gamePanel.objectsList[0] = new Key();
-        gamePanel.objectsList[0].worldX = 1 * gamePanel.tileSize;
-        gamePanel.objectsList[0].worldY = 5 * gamePanel.tileSize;
+        gamePanel.staticObjectList.add(new Key(1 * gamePanel.tileSize, 5 * gamePanel.tileSize));
     }
 }

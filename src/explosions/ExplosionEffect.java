@@ -1,5 +1,6 @@
 package explosions;
 
+import main.GameObject;
 import main.GamePanel;
 import observer.UpdatableObserver;
 import utils.SpriteManager;
@@ -7,12 +8,10 @@ import utils.SpriteManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ExplosionEffect implements UpdatableObserver {
+public class ExplosionEffect extends GameObject implements UpdatableObserver {
 
     public boolean isActive = true;
     GamePanel gamePanel;
-    private final int worldX;
-    private final int worldY;
     private int explosionEffectTimer = 90;
 
     private int spriteNum = 1;
@@ -20,6 +19,7 @@ public class ExplosionEffect implements UpdatableObserver {
     private final BufferedImage[] effectFrames;
 
     public ExplosionEffect(GamePanel gamePanel, int worldX, int worldY) {
+        super(worldX, worldY);
         this.gamePanel = gamePanel;
         this.worldX = worldX;
         this.worldY = worldY;
@@ -60,6 +60,7 @@ public class ExplosionEffect implements UpdatableObserver {
 
     }
 
+    @Override
     public void draw(Graphics2D graphics2D, GamePanel gamePanel) {
         BufferedImage image = effectFrames[spriteNum - 1];
 

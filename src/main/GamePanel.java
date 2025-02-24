@@ -10,6 +10,8 @@ import tile.TileManager;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class GamePanel extends JPanel implements Runnable, Subject {
@@ -43,7 +45,8 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public Player player = new Player(this, keyHandler);
 
     // OBJECTS AND ENTITIES
-    public SuperObject[] objectsList = new SuperObject[10];
+    ArrayList<GameObject> gameObjectsList = new ArrayList<>();
+    public List<SuperObject> staticObjectList = new ArrayList<>();
     public List<ExplosionEffect> explosionEffectList = new ArrayList<>();
     public List<ExplosiveEntity> explosiveEntityList = new ArrayList<>();
 
@@ -52,6 +55,13 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+
+    private Comparator<GameObject> gameObjectComparator = new Comparator<GameObject>() {
+        @Override
+        public int compare(GameObject object1, GameObject object2) {
+            return Integer.compare(object1.worldY, object2.worldY);
+        }
+    };
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -96,7 +106,6 @@ public class GamePanel extends JPanel implements Runnable, Subject {
             }
 
             if (timer >= oneSecond) {
-                //System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -119,45 +128,26 @@ public class GamePanel extends JPanel implements Runnable, Subject {
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
 
-        // DEBUG
-        long drawStart = 0;
-        drawStart = System.nanoTime();
-
         if (gameState == titleState) {
             userInterface.draw(graphics2D);
         } else {
             // TILE
             tileManager.draw(graphics2D);
 
-            // OBJECT
-            for (int i = 0; i < objectsList.length; i++) {
-                if (objectsList[i] != null) {
-                    objectsList[i].draw(graphics2D, this);
-                }
+            gameObjectsList.clear();
+            gameObjectsList.addAll(staticObjectList);
+            gameObjectsList.addAll(explosiveEntityList);
+            gameObjectsList.addAll(explosionEffectList);
+
+            Collections.sort(gameObjectsList, gameObjectComparator);
+
+            for (GameObject obj : gameObjectsList) {
+                obj.draw(graphics2D, this);
             }
 
-            // EXPLOSIVE
-            for (int i = 0; i < explosiveEntityList.size(); i++) {
-                if (explosiveEntityList.get(i) != null) {
-                    explosiveEntityList.get(i).draw(graphics2D, this);
-                }
-            }
-
-            // EFFECTS
-            for (int i = 0; i < explosionEffectList.size(); i++) {
-                if (explosionEffectList.get(i) != null) {
-                    explosionEffectList.get(i).draw(graphics2D, this);
-                }
-            }
-
-            // PLAYER
-            player.draw(graphics2D);
-
+            player.draw(graphics2D, this);
             userInterface.draw(graphics2D);
         }
-
-        long drawEnd = System.nanoTime();
-        long passed = drawEnd - drawStart;
 
         graphics2D.dispose();
     }

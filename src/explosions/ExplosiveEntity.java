@@ -1,17 +1,16 @@
 package explosions;
 
+import main.GameObject;
 import main.GamePanel;
 import observer.UpdatableObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ExplosiveEntity implements UpdatableObserver {
+public class ExplosiveEntity extends GameObject implements UpdatableObserver {
 
     public GamePanel gamePanel;
 
-    protected int worldX;
-    protected int worldY;
     public boolean isExploded;
     protected byte explosionArea;
     protected int explosionTimer;
@@ -21,12 +20,14 @@ public class ExplosiveEntity implements UpdatableObserver {
     protected BufferedImage[] explosionFrames;
 
     public ExplosiveEntity(int worldX, int worldY, GamePanel gamePanel) {
+        super(worldX, worldY);
         this.gamePanel = gamePanel;
         int offset = gamePanel.tileSize / 2;
         this.worldX = ((int) ((worldX + offset) / gamePanel.tileSize)) * gamePanel.tileSize;
         this.worldY = ((int) ((worldY + offset) / gamePanel.tileSize)) * gamePanel.tileSize;
     }
 
+    @Override
     public void draw(Graphics2D graphics2D, GamePanel gamePanel) {
         BufferedImage image = explosionFrames[spriteNum - 1];
 
