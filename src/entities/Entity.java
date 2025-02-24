@@ -1,11 +1,12 @@
 package entities;
 
 import main.GameObject;
+import observer.UpdatableObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Entity extends GameObject {
+public class Entity extends GameObject implements UpdatableObserver {
     public int speed;
     public boolean isMoving;
     public Direction direction;
@@ -14,6 +15,7 @@ public class Entity extends GameObject {
     // COLLISION
     public Rectangle solidArea;
     public boolean collisionOn = false;
+    public int solidAreaDefaultX, solidAreaDefaultY;
 
     // SPRITES
     public int spriteNum = 1;
@@ -33,5 +35,9 @@ public class Entity extends GameObject {
 
     public Entity(int worldX, int worldY) {
         super(worldX, worldY);
+    }
+
+    @Override
+    public void update() {
     }
 }

@@ -33,6 +33,8 @@ public class Player extends Entity implements UpdatableObserver {
         solidArea.y = 14;
         solidArea.width = 22;
         solidArea.height = 40;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
         throwCooldown = 20;
         throwCounter = 0;
@@ -51,42 +53,27 @@ public class Player extends Entity implements UpdatableObserver {
     }
 
     private void loadPlayerSprites() {
-        idleUp = new BufferedImage[4];
-        idleDown = new BufferedImage[4];
-        idleLeft = new BufferedImage[4];
-        idleRight = new BufferedImage[4];
+        idleUp = SpriteManager.loadAndScaleSpriteFrames("/character/idle/idle_up", 4, gamePanel.tileSize, gamePanel.tileSize);
+        idleDown = SpriteManager.loadAndScaleSpriteFrames("/character/idle/idle_down", 4, gamePanel.tileSize, gamePanel.tileSize);
+        idleLeft = SpriteManager.loadAndScaleSpriteFrames("/character/idle/idle_left", 4, gamePanel.tileSize, gamePanel.tileSize);
+        idleRight = SpriteManager.loadAndScaleSpriteFrames("/character/idle/idle_right", 4, gamePanel.tileSize, gamePanel.tileSize);
 
-        walkUp = new BufferedImage[8];
-        walkDown = new BufferedImage[8];
-        walkLeft = new BufferedImage[8];
-        walkRight = new BufferedImage[8];
-
-        for (int i = 0; i < 4; i++) {
-            idleUp[i] = processSprite("/character/idle/idle_up_" + i + ".png");
-            idleDown[i] = processSprite("/character/idle/idle_down_" + i + ".png");
-            idleLeft[i] = processSprite("/character/idle/idle_left_" + i + ".png");
-            idleRight[i] = processSprite("/character/idle/idle_right_" + i + ".png");
-        }
-
-        for (int i = 0; i < 8; i++) {
-            walkUp[i] = processSprite("/character/walk/walk_up_" + i + ".png");
-            walkDown[i] = processSprite("/character/walk/walk_down_" + i + ".png");
-            walkLeft[i] = processSprite("/character/walk/walk_left_" + i + ".png");
-            walkRight[i] = processSprite("/character/walk/walk_right_" + i + ".png");
-        }
+        walkUp = SpriteManager.loadAndScaleSpriteFrames("/character/walk/walk_up", 8, gamePanel.tileSize, gamePanel.tileSize);
+        walkDown = SpriteManager.loadAndScaleSpriteFrames("/character/walk/walk_down", 8, gamePanel.tileSize, gamePanel.tileSize);
+        walkLeft = SpriteManager.loadAndScaleSpriteFrames("/character/walk/walk_left", 8, gamePanel.tileSize, gamePanel.tileSize);
+        walkRight = SpriteManager.loadAndScaleSpriteFrames("/character/walk/walk_right", 8, gamePanel.tileSize, gamePanel.tileSize);
     }
 
-    private BufferedImage processSprite(String spritePath) {
-        BufferedImage scaledImage = null;
-
-        scaledImage = SpriteManager.loadImage(spritePath);
-        scaledImage = SpriteManager.scaleImage(scaledImage, gamePanel.tileSize, gamePanel.tileSize);
-
-        return scaledImage;
+    private void pickUpObject(int index) {
+        if (index != 999) {
+            gamePanel.objectsList.remove(index);
+            gamePanel.playSE(2);
+        }
     }
 
     @Override
     public void update() {
+        System.out.println(worldX / gamePanel.tileSize + " " + worldY / gamePanel.tileSize);
         if (throwCounter > 0) {
             throwCounter--;
         }
@@ -122,6 +109,10 @@ public class Player extends Entity implements UpdatableObserver {
             // CHECK PLAYER COLLISION
             collisionOn = false;
             gamePanel.collisionChecker.checkTile(this);
+
+            // CHECK OBJECT COLLISION
+            int objIndex = gamePanel.collisionChecker.checkObject(this, true);
+            pickUpObject(objIndex);
 
             if (!collisionOn) {
                 switch (direction) {

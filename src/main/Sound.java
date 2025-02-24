@@ -13,6 +13,7 @@ public class Sound {
     public Sound() {
         soundURL[0] = getClass().getResource("/sound/explosion.wav");
         soundURL[1] = getClass().getResource("/sound/wick_burning.wav");
+        soundURL[2] = getClass().getResource("/sound/pick_up.wav");
     }
 
     public void setFile(int i) {

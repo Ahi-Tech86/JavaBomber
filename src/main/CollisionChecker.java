@@ -2,6 +2,7 @@ package main;
 
 import entities.Direction;
 import entities.Entity;
+import objects.SuperObject;
 
 public class CollisionChecker {
 
@@ -62,6 +63,46 @@ public class CollisionChecker {
                 }
                 break;
         }
+    }
+
+    public int checkObject(Entity entity, boolean player) {
+        int index = 999;
+
+        for (int i = 0; i < gamePanel.objectsList.size(); i++) {
+            if (gamePanel.objectsList.get(i) != null) {
+                // Get entity's solid area position
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+                // Get object's solid area position
+                gamePanel.objectsList.get(i).solidArea.x = gamePanel.objectsList.get(i).worldX + gamePanel.objectsList.get(i).solidArea.x;
+                gamePanel.objectsList.get(i).solidArea.y = gamePanel.objectsList.get(i).worldY + gamePanel.objectsList.get(i).solidArea.y;
+
+                switch (entity.direction) {
+                    case UP -> entity.solidArea.y -= entity.speed;
+                    case DOWN -> entity.solidArea.y += entity.speed;
+                    case LEFT -> entity.solidArea.x -= entity.speed;
+                    case RIGHT -> entity.solidArea.x += entity.speed;
+                }
+
+                if (entity.solidArea.intersects(gamePanel.objectsList.get(i).solidArea)) {
+                    if (gamePanel.objectsList.get(i).collision) {
+                        entity.collisionOn = true;
+                    }
+
+                    if (player) {
+                        index = i;
+                    }
+                }
+
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                gamePanel.objectsList.get(i).solidArea.x = gamePanel.objectsList.get(i).solidAreaDefaultX;
+                gamePanel.objectsList.get(i).solidArea.y = gamePanel.objectsList.get(i).solidAreaDefaultY;
+            }
+        }
+
+        return index;
     }
 
     public boolean checkTileSolidity(int worldX, int worldY) {

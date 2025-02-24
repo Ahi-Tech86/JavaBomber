@@ -60,16 +60,31 @@ public class SpriteManager {
         }
     }
 
+    public static BufferedImage[] loadAndScaleSpriteFrames(String pathName, int size, int width, int height) {
+        BufferedImage[] frames = new BufferedImage[size];
+        String[] paths = new String[size];
+
+        for (int i = 0; i < size; i++) {
+            paths[i] = "" + pathName + "_" + i + ".png";
+        }
+
+        for (int i = 0; i < size; i++) {
+            frames[i] = scaleImage(loadImage(paths[i]), width, height);
+        }
+
+        return frames;
+    }
+
     public static void main(String[] args) {
         cropAndSaveSprites(
-                loadImage("/effects/explosion.png"),
+                loadImage("/enemies/BIRDSPRITESHEET_White.png"),
                 32,
                 32,
+                11,
                 0,
-                0,
-                3,
-                6,
-                "explosion"
+                4,
+                8,
+                "walk_up"
         );
     }
 }

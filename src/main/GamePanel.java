@@ -1,5 +1,6 @@
 package main;
 
+import entities.Entity;
 import entities.Player;
 import explosions.ExplosionEffect;
 import explosions.ExplosiveEntity;
@@ -46,7 +47,8 @@ public class GamePanel extends JPanel implements Runnable, Subject {
 
     // OBJECTS AND ENTITIES
     ArrayList<GameObject> gameObjectsList = new ArrayList<>();
-    public List<SuperObject> staticObjectList = new ArrayList<>();
+    public List<Entity> enemiesList = new ArrayList<>();
+    public List<SuperObject> objectsList = new ArrayList<>();
     public List<ExplosionEffect> explosionEffectList = new ArrayList<>();
     public List<ExplosiveEntity> explosiveEntityList = new ArrayList<>();
 
@@ -115,7 +117,12 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public void setupGame() {
         gameState = titleState;
         assetSetter.setObjects();
+        assetSetter.setEnemies();
         addObserver(player);
+
+        for (Entity enemy : enemiesList) {
+            addObserver(enemy);
+        }
     }
 
     public void update() {
@@ -135,7 +142,8 @@ public class GamePanel extends JPanel implements Runnable, Subject {
             tileManager.draw(graphics2D);
 
             gameObjectsList.clear();
-            gameObjectsList.addAll(staticObjectList);
+            gameObjectsList.addAll(enemiesList);
+            gameObjectsList.addAll(objectsList);
             gameObjectsList.addAll(explosiveEntityList);
             gameObjectsList.addAll(explosionEffectList);
 

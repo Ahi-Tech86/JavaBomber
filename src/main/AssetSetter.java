@@ -1,5 +1,6 @@
 package main;
 
+import entities.BirdEnemy;
 import objects.Key;
 
 public class AssetSetter {
@@ -11,6 +12,11 @@ public class AssetSetter {
     }
 
     public void setObjects() {
-        gamePanel.staticObjectList.add(new Key(1 * gamePanel.tileSize, 5 * gamePanel.tileSize));
+        gamePanel.objectsList.add(new Key(gamePanel.tileSize, 5 * gamePanel.tileSize));
+    }
+
+    public void setEnemies() {
+        gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 10 * gamePanel.tileSize, 1 * gamePanel.tileSize));
+        gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 14 * gamePanel.tileSize, 1 * gamePanel.tileSize));
     }
 }
