@@ -22,17 +22,45 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        switch (code) {
-            case KeyEvent.VK_E -> ePressed = true;
-            case KeyEvent.VK_W -> upPressed = true;
-            case KeyEvent.VK_S -> downPressed = true;
-            case KeyEvent.VK_A -> leftPressed = true;
-            case KeyEvent.VK_D -> rightPressed = true;
-            case KeyEvent.VK_P -> {
-                if (gamePanel.gameState == gamePanel.playState) {
-                    gamePanel.gameState = gamePanel.pauseState;
-                } else if (gamePanel.gameState == gamePanel.pauseState) {
-                    gamePanel.gameState = gamePanel.playState;
+        if (gamePanel.gameState == gamePanel.titleState) {
+            switch (code) {
+                case KeyEvent.VK_W -> {
+                    gamePanel.userInterface.commandNum--;
+
+                    if (gamePanel.userInterface.commandNum < 0) {
+                        gamePanel.userInterface.commandNum = 2;
+                    }
+                }
+                case KeyEvent.VK_S -> {
+                    gamePanel.userInterface.commandNum++;
+
+                    if (gamePanel.userInterface.commandNum > 2) {
+                        gamePanel.userInterface.commandNum = 0;
+                    }
+                }
+                case KeyEvent.VK_ENTER -> {
+                    if (gamePanel.userInterface.commandNum == 0) {
+                        gamePanel.gameState = gamePanel.playState;
+                    } else if (gamePanel.userInterface.commandNum == 1) {
+                        // nothing now
+                    } else if (gamePanel.userInterface.commandNum == 2) {
+                        System.exit(0);
+                    }
+                }
+            }
+        } else {
+            switch (code) {
+                case KeyEvent.VK_E -> ePressed = true;
+                case KeyEvent.VK_W -> upPressed = true;
+                case KeyEvent.VK_S -> downPressed = true;
+                case KeyEvent.VK_A -> leftPressed = true;
+                case KeyEvent.VK_D -> rightPressed = true;
+                case KeyEvent.VK_P -> {
+                    if (gamePanel.gameState == gamePanel.playState) {
+                        gamePanel.gameState = gamePanel.pauseState;
+                    } else if (gamePanel.gameState == gamePanel.pauseState) {
+                        gamePanel.gameState = gamePanel.playState;
+                    }
                 }
             }
         }

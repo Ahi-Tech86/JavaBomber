@@ -49,6 +49,7 @@ public class GamePanel extends JPanel implements Runnable, Subject {
 
     // STATES
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
 
@@ -103,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     }
 
     public void setupGame() {
-        gameState = playState;
+        gameState = titleState;
         assetSetter.setObjects();
         addObserver(player);
     }
@@ -122,34 +123,38 @@ public class GamePanel extends JPanel implements Runnable, Subject {
         long drawStart = 0;
         drawStart = System.nanoTime();
 
-        // TILE
-        tileManager.draw(graphics2D);
+        if (gameState == titleState) {
+            userInterface.draw(graphics2D);
+        } else {
+            // TILE
+            tileManager.draw(graphics2D);
 
-        // OBJECT
-        for (int i = 0; i < objectsList.length; i++) {
-            if (objectsList[i] != null) {
-                objectsList[i].draw(graphics2D, this);
+            // OBJECT
+            for (int i = 0; i < objectsList.length; i++) {
+                if (objectsList[i] != null) {
+                    objectsList[i].draw(graphics2D, this);
+                }
             }
-        }
 
-        // EXPLOSIVE
-        for (int i = 0; i < explosiveEntityList.size(); i++) {
-            if (explosiveEntityList.get(i) != null) {
-                explosiveEntityList.get(i).draw(graphics2D, this);
+            // EXPLOSIVE
+            for (int i = 0; i < explosiveEntityList.size(); i++) {
+                if (explosiveEntityList.get(i) != null) {
+                    explosiveEntityList.get(i).draw(graphics2D, this);
+                }
             }
-        }
 
-        // EFFECTS
-        for (int i = 0; i < explosionEffectList.size(); i++) {
-            if (explosionEffectList.get(i) != null) {
-                explosionEffectList.get(i).draw(graphics2D, this);
+            // EFFECTS
+            for (int i = 0; i < explosionEffectList.size(); i++) {
+                if (explosionEffectList.get(i) != null) {
+                    explosionEffectList.get(i).draw(graphics2D, this);
+                }
             }
+
+            // PLAYER
+            player.draw(graphics2D);
+
+            userInterface.draw(graphics2D);
         }
-
-        // PLAYER
-        player.draw(graphics2D);
-
-        userInterface.draw(graphics2D);
 
         long drawEnd = System.nanoTime();
         long passed = drawEnd - drawStart;
