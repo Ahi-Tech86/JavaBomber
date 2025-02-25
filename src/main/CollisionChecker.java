@@ -2,6 +2,7 @@ package main;
 
 import entities.Direction;
 import entities.Entity;
+import explosions.ExplosionEffect;
 import objects.SuperObject;
 
 import java.util.ArrayList;
@@ -178,6 +179,42 @@ public class CollisionChecker {
         }
 
         return index;
+    }
+
+    public boolean checkEntityInExplosionArea(Entity entity, ArrayList<ExplosionEffect> explosions) {
+        int index = 999;
+
+        for (int i = 0; i < explosions.size(); i++) {
+            if (explosions.get(i) != null) {
+                ExplosionEffect explosion = explosions.get(i);
+
+                // Get entity's solid area position
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+                // Get object's solid area position
+                explosion.solidArea.x = explosion.worldX + explosion.solidArea.x;
+                explosion.solidArea.y = explosion.worldY + explosion.solidArea.y;
+
+                switch (entity.direction) {
+                    case UP -> entity.solidArea.y -= entity.speed;
+                    case DOWN -> entity.solidArea.y += entity.speed;
+                    case LEFT -> entity.solidArea.x -= entity.speed;
+                    case RIGHT -> entity.solidArea.x += entity.speed;
+                }
+
+                if (entity.solidArea.intersects(explosion.solidArea)) {
+                    index = i;
+                }
+
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                explosion.solidArea.x = explosion.solidAreaDefaultX;
+                explosion.solidArea.y = explosion.solidAreaDefaultY;
+            }
+        }
+
+        return index != 999;
     }
 
     public boolean checkTileSolidity(int worldX, int worldY) {

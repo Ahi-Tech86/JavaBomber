@@ -17,12 +17,18 @@ public class ExplosionEffect extends GameObject implements UpdatableObserver {
     private int spriteNum = 1;
     private int spriteCounter = 0;
     private final BufferedImage[] effectFrames;
+    public Rectangle solidArea = new Rectangle();
+    public int solidAreaDefaultX, solidAreaDefaultY;
 
     public ExplosionEffect(GamePanel gamePanel, int worldX, int worldY) {
         super(worldX, worldY);
         this.gamePanel = gamePanel;
         this.worldX = worldX;
         this.worldY = worldY;
+        this.solidArea.x = 0;
+        this.solidArea.y = 0;
+        this.solidArea.width = 64;
+        this.solidArea.height = 64;
 
         String[] effectPaths = {
                 "/effects/explosion_0.png",

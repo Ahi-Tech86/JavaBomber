@@ -1,5 +1,6 @@
 package entities;
 
+import explosions.ExplosionEffect;
 import main.GamePanel;
 import utils.SpriteManager;
 
@@ -100,6 +101,10 @@ public class BirdEnemy extends Entity {
         gamePanel.collisionChecker.checkObject(this, false);
         gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
         boolean contactPlayer = gamePanel.collisionChecker.checkPlayer(this);
+        boolean exploded = gamePanel.collisionChecker.checkEntityInExplosionArea(this, (ArrayList<ExplosionEffect>) gamePanel.explosionEffectList);
+        if (exploded) {
+            System.out.println("You died");
+        }
 
         if (!this.isPlayer && contactPlayer) {
             if (!gamePanel.player.invincible) {
