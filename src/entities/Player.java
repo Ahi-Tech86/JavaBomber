@@ -8,6 +8,7 @@ import utils.SpriteManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends Entity implements UpdatableObserver {
 
@@ -50,6 +51,9 @@ public class Player extends Entity implements UpdatableObserver {
         this.isMoving = false;
         this.direction = Direction.DOWN;
         this.lastDirection = Direction.DOWN;
+        this.maxLife = 2;
+        this.life = this.maxLife;
+        this.isPlayer = true;
     }
 
     private void loadPlayerSprites() {
@@ -71,9 +75,18 @@ public class Player extends Entity implements UpdatableObserver {
         }
     }
 
+    private void contactWithEnemy(int index) {
+        if (index != 999) {
+            if (!invincible) {
+                life -= 1;
+                invincible = true;
+            }
+
+        }
+    }
+
     @Override
     public void update() {
-        System.out.println(worldX / gamePanel.tileSize + " " + worldY / gamePanel.tileSize);
         if (throwCounter > 0) {
             throwCounter--;
         }
@@ -114,6 +127,10 @@ public class Player extends Entity implements UpdatableObserver {
             int objIndex = gamePanel.collisionChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
+            // CHECK ENEMIES COLLISION
+            int enemyIndex = gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
+            contactWithEnemy(enemyIndex);
+
             if (!collisionOn) {
                 switch (direction) {
                     case UP -> worldY -= speed;
@@ -150,6 +167,15 @@ public class Player extends Entity implements UpdatableObserver {
                 }
             }
         }
+
+        if (invincible) {
+            invincibleCounter++;
+
+            if (invincibleCounter > 30) {
+                invincibleCounter = 0;
+                invincible = false;
+            }
+        }
     }
 
     @Override
@@ -173,7 +199,14 @@ public class Player extends Entity implements UpdatableObserver {
             }
         }
 
+        if (invincible) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         graphics2D.drawImage(image, screenX, screenY, null);
+
+        // RESET ALPHA
+        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
     private void drawCheckBox(Graphics2D graphics2D) {

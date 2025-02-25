@@ -5,6 +5,7 @@ import utils.SpriteManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BirdEnemy extends Entity {
@@ -31,6 +32,7 @@ public class BirdEnemy extends Entity {
 
     private void setDefaultVariables() {
         this.speed = 3;
+        this.isPlayer = false;
         this.isMoving = false;
         this.direction = Direction.DOWN;
         this.lastDirection = Direction.DOWN;
@@ -96,6 +98,15 @@ public class BirdEnemy extends Entity {
         collisionOn = false;
         gamePanel.collisionChecker.checkTile(this);
         gamePanel.collisionChecker.checkObject(this, false);
+        gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
+        boolean contactPlayer = gamePanel.collisionChecker.checkPlayer(this);
+
+        if (!this.isPlayer && contactPlayer) {
+            if (!gamePanel.player.invincible) {
+                gamePanel.player.life -= 1;
+                gamePanel.player.invincible = true;
+            }
+        }
 
         if (!collisionOn) {
             switch (direction) {
