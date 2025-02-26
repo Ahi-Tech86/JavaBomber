@@ -4,6 +4,7 @@ import entities.Direction;
 import entities.Entity;
 import explosions.ExplosionEffect;
 import objects.SuperObject;
+import tile_interactive.InteractiveTile;
 
 import java.util.ArrayList;
 
@@ -181,6 +182,43 @@ public class CollisionChecker {
         return index;
     }
 
+    public int checkInteractiveTiles(Entity entity, ArrayList<InteractiveTile> target) {
+        int index = 999;
+
+        for (int i = 0; i < target.size(); i++) {
+            if (target.get(i) != null) {
+                InteractiveTile iTile = target.get(i);
+
+                // Get entity solid area
+                entity.solidArea.x = entity.worldX + entity.solidArea.x;
+                entity.solidArea.y = entity.worldY + entity.solidArea.y;
+
+                // Get object solid area
+                iTile.solidArea.x = iTile.worldX + iTile.solidArea.x;
+                iTile.solidArea.y = iTile.worldY + iTile.solidArea.y;
+
+                switch (entity.direction) {
+                    case UP -> entity.solidArea.y -= entity.speed;
+                    case DOWN -> entity.solidArea.y += entity.speed;
+                    case LEFT -> entity.solidArea.x -= entity.speed;
+                    case RIGHT -> entity.solidArea.x += entity.speed;
+                }
+
+                if (entity.solidArea.intersects(iTile.solidArea)) {
+                    entity.collisionOn = true;
+                    index = i;
+                }
+
+                entity.solidArea.x = entity.solidAreaDefaultX;
+                entity.solidArea.y = entity.solidAreaDefaultY;
+                iTile.solidArea.x = iTile.solidAreaDefaultX;
+                iTile.solidArea.y = iTile.solidAreaDefaultY;
+            }
+        }
+
+        return index;
+    }
+
     public boolean checkEntityInExplosionArea(Entity entity, ArrayList<ExplosionEffect> explosions) {
         int index = 999;
 
@@ -233,6 +271,42 @@ public class CollisionChecker {
 
         int tileNum = gamePanel.tileManager.mapTileNum[explosionCol][explosionRow];
 
+//        if (!gamePanel.tileManager.tileset[tileNum].collision) {
+//            for (int i = 0; i < gamePanel.interactiveTileList.size(); i++) {
+//                if (gamePanel.interactiveTileList.get(i) != null) {
+//                    InteractiveTile iTile = gamePanel.interactiveTileList.get(i);
+//                    int iTileCol = iTile.worldX / gamePanel.tileSize;
+//                    int iTileRow = iTile.worldY / gamePanel.tileSize;
+//
+//                    if (iTileCol == explosionCol && iTileRow == explosionRow) {
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
+
         return gamePanel.tileManager.tileset[tileNum].collision;
+    }
+
+    public boolean checkInteractiveTileExplosion(int worldX, int worldY) {
+        int explosionCol = worldX / gamePanel.tileSize;
+        int explosionRow = worldY / gamePanel.tileSize;
+
+        for (int i = 0; i < gamePanel.interactiveTileList.size(); i++) {
+            if (gamePanel.interactiveTileList.get(i) != null) {
+                InteractiveTile iTile = gamePanel.interactiveTileList.get(i);
+                int iTileCol = iTile.worldX / gamePanel.tileSize;
+                int iTileRow = iTile.worldY / gamePanel.tileSize;
+
+                if (iTileCol == explosionCol && iTileRow == explosionRow) {
+                    gamePanel.interactiveTileList.remove(iTile);
+                    gamePanel.removeObserver(iTile);
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

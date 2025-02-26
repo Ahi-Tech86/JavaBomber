@@ -2,6 +2,7 @@ package entities;
 
 import explosions.ExplosionEffect;
 import main.GamePanel;
+import tile_interactive.InteractiveTile;
 import utils.SpriteManager;
 
 import java.awt.*;
@@ -107,6 +108,7 @@ public class BirdEnemy extends Entity {
         gamePanel.collisionChecker.checkTile(this);
         gamePanel.collisionChecker.checkObject(this, false);
         gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
+        gamePanel.collisionChecker.checkInteractiveTiles(this, (ArrayList<InteractiveTile>) gamePanel.interactiveTileList);
         boolean contactPlayer = gamePanel.collisionChecker.checkPlayer(this);
         boolean exploded = gamePanel.collisionChecker.checkEntityInExplosionArea(this, (ArrayList<ExplosionEffect>) gamePanel.explosionEffectList);
 

@@ -26,6 +26,18 @@ public class AssetSetter {
     }
 
     public void setInteractiveTiles() {
-        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, gamePanel.tileSize, 2 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 1 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 2 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 3 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 4 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 5 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 6 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 7 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 8 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 9 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 10 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 11 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 12 * gamePanel.tileSize));
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 13 * gamePanel.tileSize));
     }
 }

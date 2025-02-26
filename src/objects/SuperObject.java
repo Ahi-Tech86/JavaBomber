@@ -12,9 +12,6 @@ public class SuperObject extends GameObject {
     public BufferedImage image;
     public boolean collision = false;
     protected int tileSizeHalf = 64 / 2;
-    public Rectangle solidArea = new Rectangle(0, 0, 64, 64);
-    public int solidAreaDefaultX = 0;
-    public int solidAreaDefaultY = 0;
 
     public SuperObject(int worldX, int worldY) {
         super(worldX, worldY);

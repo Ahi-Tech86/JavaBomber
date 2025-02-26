@@ -1,11 +1,13 @@
 package tile_interactive;
 
+import explosions.ExplosionEffect;
 import main.GameObject;
 import main.GamePanel;
 import observer.UpdatableObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class InteractiveTile extends GameObject implements UpdatableObserver {
 
@@ -22,7 +24,6 @@ public class InteractiveTile extends GameObject implements UpdatableObserver {
 
     @Override
     public void update() {
-
     }
 
     @Override

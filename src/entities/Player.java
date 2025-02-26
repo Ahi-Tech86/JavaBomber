@@ -4,6 +4,7 @@ import explosions.DynamitePack;
 import main.GamePanel;
 import main.KeyHandler;
 import observer.UpdatableObserver;
+import tile_interactive.InteractiveTile;
 import utils.SpriteManager;
 
 import java.awt.*;
@@ -132,6 +133,8 @@ public class Player extends Entity implements UpdatableObserver {
             // CHECK ENEMIES COLLISION
             int enemyIndex = gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
             contactWithEnemy(enemyIndex);
+
+            gamePanel.collisionChecker.checkInteractiveTiles(this, (ArrayList<InteractiveTile>) gamePanel.interactiveTileList);
 
             if (!collisionOn) {
                 switch (direction) {

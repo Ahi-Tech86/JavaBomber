@@ -88,6 +88,11 @@ public class ExplosiveEntity extends GameObject implements UpdatableObserver {
                 break;
             }
 
+            if (gamePanel.collisionChecker.checkInteractiveTileExplosion(targetX, targetY)) {
+                createExplosionEffect(targetX, targetY);
+                break;
+            }
+
             createExplosionEffect(targetX, targetY);
         }
     }

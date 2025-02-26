@@ -15,9 +15,7 @@ public class Entity extends GameObject implements UpdatableObserver {
     public Direction lastDirection;
 
     // COLLISION
-    public Rectangle solidArea;
     public boolean collisionOn = false;
-    public int solidAreaDefaultX, solidAreaDefaultY;
 
     // SPRITES
     public int spriteNum = 1;
