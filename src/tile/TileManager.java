@@ -25,8 +25,9 @@ public class TileManager {
     }
 
     private void getTileImage() {
-        setup(0, "/tileset/road00.png", false);
-        setup(1, "/tileset/wall.png", true);
+        setup(0, "/tileset/grass.png", false);
+        setup(1, "/tileset/dark_wall.png", true);
+        setup(2, "/tileset/dark_wall_broken_3.png", true);
     }
 
     private void setup(int index, String imagePath, boolean collision) {

@@ -2,6 +2,7 @@ package utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,12 @@ public class SpriteManager {
     public static BufferedImage scaleImage(BufferedImage defaultImage, int scaleWidth, int scaleHeight) {
         BufferedImage scaledImage = new BufferedImage(scaleWidth, scaleHeight, defaultImage.getType());
         Graphics2D graphics2D = scaledImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+        //AffineTransform affineTransform = new AffineTransform();
+        //affineTransform.scale((double) scaleWidth / defaultImage.getWidth(), (double) scaleHeight / defaultImage.getHeight());
         graphics2D.drawImage(defaultImage, 0, 0, scaleWidth, scaleHeight, null);
+        //graphics2D.drawImage(defaultImage, affineTransform, null);
         graphics2D.dispose();
 
         return scaledImage;
@@ -77,14 +83,14 @@ public class SpriteManager {
 
     public static void main(String[] args) {
         cropAndSaveSprites(
-                loadImage("/enemies/BIRDSPRITESHEET_White.png"),
+                loadImage("/tileset/sheets/grass.png"),
                 32,
                 32,
-                11,
                 0,
-                4,
-                8,
-                "walk_up"
+                0,
+                1,
+                1,
+                "grass"
         );
     }
 }

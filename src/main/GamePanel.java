@@ -7,6 +7,7 @@ import explosions.ExplosiveEntity;
 import objects.SuperObject;
 import observer.Subject;
 import tile.TileManager;
+import tile_interactive.InteractiveTile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public List<SuperObject> objectsList = new ArrayList<>();
     public List<ExplosionEffect> explosionEffectList = new ArrayList<>();
     public List<ExplosiveEntity> explosiveEntityList = new ArrayList<>();
+    public List<InteractiveTile> interactiveTileList = new ArrayList<>();
 
     // STATES
     public int gameState;
@@ -120,10 +122,15 @@ public class GamePanel extends JPanel implements Runnable, Subject {
         gameState = titleState;
         assetSetter.setObjects();
         assetSetter.setEnemies();
+        assetSetter.setInteractiveTiles();
         addObserver(player);
 
         for (Entity enemy : enemiesList) {
             addObserver(enemy);
+        }
+
+        for (InteractiveTile iTile : interactiveTileList) {
+            addObserver(iTile);
         }
 
         levelStartTime = System.nanoTime();
@@ -153,6 +160,7 @@ public class GamePanel extends JPanel implements Runnable, Subject {
             gameObjectsList.addAll(objectsList);
             gameObjectsList.addAll(explosiveEntityList);
             gameObjectsList.addAll(explosionEffectList);
+            gameObjectsList.addAll(interactiveTileList);
 
             Collections.sort(gameObjectsList, gameObjectComparator);
 
