@@ -62,6 +62,7 @@ public class KeyHandler implements KeyListener {
                         gamePanel.gameState = gamePanel.playState;
                     }
                 }
+                case KeyEvent.VK_Z -> gamePanel.userInterface.debugMode = !gamePanel.userInterface.debugMode;
             }
         }
     }
