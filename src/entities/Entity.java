@@ -40,6 +40,10 @@ public class Entity extends GameObject implements UpdatableObserver {
     public boolean invincible = false;
     public int invincibleCounter = 0;
 
+    public boolean alive = true;
+    public boolean dying = false;
+    public int dyingCounter = 0;
+
     public Entity(int worldX, int worldY) {
         super(worldX, worldY);
     }

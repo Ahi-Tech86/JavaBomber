@@ -34,6 +34,8 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     // FPS
     final int FPS = 60;
 
+    protected long levelStartTime;
+
     // SYSTEM
     Thread gameThread;
     Sound se = new Sound();
@@ -123,6 +125,8 @@ public class GamePanel extends JPanel implements Runnable, Subject {
         for (Entity enemy : enemiesList) {
             addObserver(enemy);
         }
+
+        levelStartTime = System.nanoTime();
     }
 
     public void update() {

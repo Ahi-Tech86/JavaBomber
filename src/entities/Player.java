@@ -18,6 +18,7 @@ public class Player extends Entity implements UpdatableObserver {
     public final int screenX;
     public final int screenY;
 
+    public int points;
     private int throwCooldown;
     private int throwCounter;
 
@@ -36,6 +37,8 @@ public class Player extends Entity implements UpdatableObserver {
         solidArea.height = 40;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+        points = 0;
 
         throwCooldown = 20;
         throwCounter = 0;

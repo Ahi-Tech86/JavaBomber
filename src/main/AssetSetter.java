@@ -18,5 +18,9 @@ public class AssetSetter {
     public void setEnemies() {
         gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 10 * gamePanel.tileSize, 1 * gamePanel.tileSize));
         gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 14 * gamePanel.tileSize, 1 * gamePanel.tileSize));
+        gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 16 * gamePanel.tileSize, 1 * gamePanel.tileSize));
+        gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 18 * gamePanel.tileSize, 1 * gamePanel.tileSize));
+        gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 20 * gamePanel.tileSize, 1 * gamePanel.tileSize));
+        gamePanel.enemiesList.add(new BirdEnemy(gamePanel, 22 * gamePanel.tileSize, 1 * gamePanel.tileSize));
     }
 }

@@ -94,6 +94,12 @@ public class BirdEnemy extends Entity {
 
     @Override
     public void update() {
+        if (!alive) {
+            gamePanel.player.points += 400;
+            gamePanel.removeObserver(this);
+            gamePanel.enemiesList.remove(this);
+        }
+
         setAction();
 
         collisionOn = false;
@@ -102,8 +108,9 @@ public class BirdEnemy extends Entity {
         gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
         boolean contactPlayer = gamePanel.collisionChecker.checkPlayer(this);
         boolean exploded = gamePanel.collisionChecker.checkEntityInExplosionArea(this, (ArrayList<ExplosionEffect>) gamePanel.explosionEffectList);
+
         if (exploded) {
-            System.out.println("You died");
+            this.dying = true;
         }
 
         if (!this.isPlayer && contactPlayer) {
@@ -113,7 +120,7 @@ public class BirdEnemy extends Entity {
             }
         }
 
-        if (!collisionOn) {
+        if (!collisionOn && !dying) {
             switch (direction) {
                 case UP -> worldY -= speed;
                 case DOWN -> worldY += speed;
@@ -169,7 +176,36 @@ public class BirdEnemy extends Entity {
                 worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
                 worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY)
         {
+            if (dying) {
+                dyingAnimation(graphics2D);
+            }
+
             graphics2D.drawImage(image, screenX, screenY, null);
+        }
+    }
+
+    private void dyingAnimation(Graphics2D graphics2D) {
+        dyingCounter++;
+
+        if (dyingCounter <= 5) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        } else if (dyingCounter <= 10) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else if (dyingCounter <= 15) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        } else if (dyingCounter <= 20) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else if (dyingCounter <= 25) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        } else if (dyingCounter <= 30) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else if (dyingCounter <= 35) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0f));
+        } else if (dyingCounter <= 40) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else {
+            dying = false;
+            alive = false;
         }
     }
 }

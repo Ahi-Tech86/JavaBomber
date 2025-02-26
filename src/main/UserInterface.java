@@ -3,6 +3,7 @@ package main;
 import utils.Loader;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class UserInterface {
 
@@ -26,7 +27,7 @@ public class UserInterface {
         if (gamePanel.gameState == gamePanel.titleState) {
             drawTitleScreen();
         } else if (gamePanel.gameState == gamePanel.playState) {
-            // nothing now
+            drawGameInterface();
         } else if (gamePanel.gameState == gamePanel.pauseState) {
             drawPauseScreen();
         }
@@ -52,12 +53,9 @@ public class UserInterface {
         int x = getXforCenteredText(text);
         int y = gamePanel.tileSize * 3;
 
-        // SHADOW
-        graphics2D.setColor(Color.gray);
-        graphics2D.drawString(text, x + 5, y + 5);
         // NAME
-        graphics2D.setColor(Color.WHITE);
-        graphics2D.drawString(text, x, y);
+        drawStringAndShadowForText(text, x, y, 5);
+
         // PLAYER
         x = gamePanel.screenWidth / 2 - (gamePanel.tileSize * 2) / 2;
         y += gamePanel.tileSize / 4;
@@ -89,6 +87,34 @@ public class UserInterface {
         if (commandNum == 2) {
             graphics2D.drawString(">", x - gamePanel.tileSize, y - 2);
         }
+    }
+
+    private void drawGameInterface() {
+        graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 48F));
+
+        // POINTS
+        String text = "POINTS: " + gamePanel.player.points;
+        int x = getXforCenteredText(text);
+        int y = gamePanel.tileSize;
+        drawStringAndShadowForText(text, x, y, 2);
+
+        // HOW MANY ENEMIES LEFT
+        text = "LEFT: " + gamePanel.enemiesList.stream().filter(Objects::nonNull).count();
+        x = gamePanel.tileSize * 13;
+        drawStringAndShadowForText(text, x, y, 2);
+
+        // TIME ELAPSED
+        long elapsedTime = (System.nanoTime() - gamePanel.levelStartTime) / 1_000_000_000;
+        text = "TIME: " + elapsedTime;
+        x = gamePanel.tileSize;
+        drawStringAndShadowForText(text, x, y, 2);
+    }
+
+    private void drawStringAndShadowForText(String text, int x, int y, int offset) {
+        graphics2D.setColor(Color.gray);
+        graphics2D.drawString(text, x + offset, y + offset);
+        graphics2D.setColor(Color.WHITE);
+        graphics2D.drawString(text, x, y);
     }
 
     private int getXforCenteredText(String text) {
