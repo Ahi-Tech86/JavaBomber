@@ -84,7 +84,6 @@ public class Player extends Entity implements UpdatableObserver {
                 life -= 1;
                 invincible = true;
             }
-
         }
     }
 

@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public final int playState = 1;
     public final int pauseState = 2;
 
-    private Comparator<GameObject> gameObjectComparator = new Comparator<GameObject>() {
+    private final Comparator<GameObject> gameObjectComparator = new Comparator<GameObject>() {
         @Override
         public int compare(GameObject object1, GameObject object2) {
             return Integer.compare(object1.worldY, object2.worldY);
@@ -138,6 +138,9 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
+
+        graphics2D.setColor(Color.gray);
+        graphics2D.fillRect(0, 0, screenWidth, screenHeight);
 
         if (gameState == titleState) {
             userInterface.draw(graphics2D);

@@ -10,9 +10,14 @@ import java.awt.image.BufferedImage;
 
 public class ExplosionEffect extends GameObject implements UpdatableObserver {
 
-    public boolean isActive = true;
     GamePanel gamePanel;
-    private int explosionEffectTimer = 90;
+
+    public boolean isLethal = true;
+    public boolean isActive = true;
+
+    private final int spritePerFrame = 5;
+    private final int explosionEffectTime = 30;
+    private int explosionEffectCounter = explosionEffectTime;
 
     private int spriteNum = 1;
     private int spriteCounter = 0;
@@ -45,13 +50,18 @@ public class ExplosionEffect extends GameObject implements UpdatableObserver {
     @Override
     public void update() {
         if (isActive) {
-            explosionEffectTimer--;
-            if (explosionEffectTimer == 0) {
+            explosionEffectCounter--;
+
+            if (explosionEffectCounter < explosionEffectTime / 2) {
+                isLethal = false;
+            }
+
+            if (explosionEffectCounter == 0) {
                 isActive = false;
             }
 
             spriteCounter++;
-            if (spriteCounter > 15) {
+            if (spriteCounter > spritePerFrame) {
                 spriteNum++;
                 spriteCounter = 0;
 

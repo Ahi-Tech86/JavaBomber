@@ -54,7 +54,7 @@ public class UserInterface {
         int y = gamePanel.tileSize * 3;
 
         // NAME
-        drawStringAndShadowForText(text, x, y, 5);
+        drawStringAndShadowForText(text, x, y, 5, Color.gray);
 
         // PLAYER
         x = gamePanel.screenWidth / 2 - (gamePanel.tileSize * 2) / 2;
@@ -96,22 +96,22 @@ public class UserInterface {
         String text = "POINTS: " + gamePanel.player.points;
         int x = getXforCenteredText(text);
         int y = gamePanel.tileSize;
-        drawStringAndShadowForText(text, x, y, 2);
+        drawStringAndShadowForText(text, x, y, 3, Color.black);
 
         // HOW MANY ENEMIES LEFT
         text = "LEFT: " + gamePanel.enemiesList.stream().filter(Objects::nonNull).count();
         x = gamePanel.tileSize * 13;
-        drawStringAndShadowForText(text, x, y, 2);
+        drawStringAndShadowForText(text, x, y, 3, Color.black);
 
         // TIME ELAPSED
         long elapsedTime = (System.nanoTime() - gamePanel.levelStartTime) / 1_000_000_000;
         text = "TIME: " + elapsedTime;
         x = gamePanel.tileSize;
-        drawStringAndShadowForText(text, x, y, 2);
+        drawStringAndShadowForText(text, x, y, 3, Color.black);
     }
 
-    private void drawStringAndShadowForText(String text, int x, int y, int offset) {
-        graphics2D.setColor(Color.gray);
+    private void drawStringAndShadowForText(String text, int x, int y, int offset, Color shadowColor) {
+        graphics2D.setColor(shadowColor);
         graphics2D.drawString(text, x + offset, y + offset);
         graphics2D.setColor(Color.WHITE);
         graphics2D.drawString(text, x, y);

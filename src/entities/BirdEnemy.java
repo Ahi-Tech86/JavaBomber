@@ -96,6 +96,7 @@ public class BirdEnemy extends Entity {
     public void update() {
         if (!alive) {
             gamePanel.player.points += 400;
+            gamePanel.playSE(3);
             gamePanel.removeObserver(this);
             gamePanel.enemiesList.remove(this);
         }
@@ -170,17 +171,20 @@ public class BirdEnemy extends Entity {
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
+        if (dying) {
+            dyingAnimation(graphics2D);
+        }
+
         if (
                 worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
                 worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
                 worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
                 worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY)
         {
-            if (dying) {
-                dyingAnimation(graphics2D);
-            }
-
             graphics2D.drawImage(image, screenX, screenY, null);
+
+            // RESET ALPHA
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
 

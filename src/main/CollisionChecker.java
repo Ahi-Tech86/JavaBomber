@@ -204,7 +204,9 @@ public class CollisionChecker {
                 }
 
                 if (entity.solidArea.intersects(explosion.solidArea)) {
-                    index = i;
+                    if (explosion.isLethal) {
+                        index = i;
+                    }
                 }
 
                 entity.solidArea.x = entity.solidAreaDefaultX;
@@ -231,10 +233,6 @@ public class CollisionChecker {
 
         int tileNum = gamePanel.tileManager.mapTileNum[explosionCol][explosionRow];
 
-        if (gamePanel.tileManager.tileset[tileNum].collision) {
-            return true;
-        }
-
-        return false;
+        return gamePanel.tileManager.tileset[tileNum].collision;
     }
 }
