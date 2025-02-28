@@ -76,12 +76,24 @@ public class BirdEnemy extends Entity {
     }
 
     private void setAction() {
-        actionLockCounter++;
+        if (onPath) {
+            // Check if it stops chasing
+            checkStopChasingOrNot(gamePanel.player, 5, 100);
 
-        if (actionLockCounter == 150) {
-            int i = random.nextInt(100) + 1;
-            setDirection(i);
-            actionLockCounter = 0;
+            // Search direction to goal
+            searchPath(getGoalCol(gamePanel.player), getGoalRow(gamePanel.player));
+
+        } else {
+            // Check if it starts chasing
+            checkStartChasingOrNot(gamePanel.player, 5, 100);
+
+            actionLockCounter++;
+
+            if (actionLockCounter == 150) {
+                int i = random.nextInt(100) + 1;
+                setDirection(i);
+                actionLockCounter = 0;
+            }
         }
     }
 
@@ -91,27 +103,6 @@ public class BirdEnemy extends Entity {
         gamePanel.removeObserver(this);
         gamePanel.enemiesList.remove(this);
         gamePanel.enemiesNumbers--;
-    }
-
-    private void checkCollisions() {
-        collisionOn = false;
-        gamePanel.collisionChecker.checkTile(this);
-        gamePanel.collisionChecker.checkObject(this, false);
-        gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
-        gamePanel.collisionChecker.checkInteractiveTiles(this, (ArrayList<InteractiveTile>) gamePanel.interactiveTileList);
-        boolean contactPlayer = gamePanel.collisionChecker.checkPlayer(this);
-        boolean exploded = gamePanel.collisionChecker.checkEntityInExplosionArea(this, (ArrayList<ExplosionEffect>) gamePanel.explosionEffectList);
-
-        if (exploded) {
-            this.dying = true;
-        }
-
-        if (!this.isPlayer && contactPlayer) {
-            if (!gamePanel.player.invincible) {
-                gamePanel.player.life -= 1;
-                gamePanel.player.invincible = true;
-            }
-        }
     }
 
     private void updateSprites() {
@@ -139,7 +130,7 @@ public class BirdEnemy extends Entity {
         }
 
         setAction();
-        checkCollisions();
+        checkCollision();
         updatePosition();
         updateSprites();
     }

@@ -13,6 +13,7 @@ public class InteractiveTile extends GameObject implements UpdatableObserver {
     GamePanel gamePanel;
 
     protected BufferedImage image;
+    public boolean destructible = false;
 
     public InteractiveTile(GamePanel gamePanel, int worldX, int worldY) {
         super(gamePanel, worldX, worldY);

@@ -1,5 +1,6 @@
 package main;
 
+import ai.PathFinder;
 import entities.Entity;
 import entities.Player;
 import explosions.ExplosionEffect;
@@ -40,9 +41,10 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     Thread gameThread;
     Sound se = new Sound();
     Sound music = new Sound();
+    public PathFinder pathFinder = new PathFinder(this);
     UserInterface userInterface = new UserInterface(this);
     KeyHandler keyHandler = new KeyHandler(this);
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this);
     public Player player = new Player(this, keyHandler);
