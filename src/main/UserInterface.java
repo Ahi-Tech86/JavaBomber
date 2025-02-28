@@ -3,7 +3,6 @@ package main;
 import utils.Loader;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class UserInterface {
 
@@ -14,6 +13,7 @@ public class UserInterface {
     Font menuFont;
     Font debugFont;
     Font maruMonica;
+    Font gameOverFont;
 
     public int commandNum = 0;
     public boolean debugMode = false;
@@ -25,6 +25,7 @@ public class UserInterface {
         debugFont = maruMonica.deriveFont(Font.PLAIN, 20F);
         titleFont = maruMonica.deriveFont(Font.BOLD, 96F);
         menuFont = maruMonica.deriveFont(Font.BOLD, 48F);
+        gameOverFont = maruMonica.deriveFont(Font.BOLD, 110F);
     }
 
     public void draw(Graphics2D graphics2D) {
@@ -39,6 +40,8 @@ public class UserInterface {
             drawGameInterface();
         } else if (gamePanel.gameState == gamePanel.pauseState) {
             drawPauseScreen();
+        } else if (gamePanel.gameState == gamePanel.gameOverState) {
+            drawGameOverScreen();
         }
     }
 
@@ -60,7 +63,7 @@ public class UserInterface {
         String text = "JavaBomberman";
         int x = getXforCenteredText(text);
         int y = gamePanel.tileSize * 3;
-        drawStringAndShadowForText(text, x, y, 5, Color.gray);
+        drawTextAndShadow(text, x, y, 5, Color.gray);
 
         // PLAYER
         x = gamePanel.screenWidth / 2 - (gamePanel.tileSize * 2) / 2;
@@ -92,18 +95,18 @@ public class UserInterface {
         String text = "POINTS: " + gamePanel.player.points;
         int x = getXforCenteredText(text);
         int y = gamePanel.tileSize;
-        drawStringAndShadowForText(text, x, y, 3, Color.black);
+        drawTextAndShadow(text, x, y, 3, Color.black);
 
         // HOW MANY ENEMIES LEFT
         text = "LEFT: " + gamePanel.enemiesNumbers;
         x = gamePanel.tileSize * 13;
-        drawStringAndShadowForText(text, x, y, 3, Color.black);
+        drawTextAndShadow(text, x, y, 3, Color.black);
 
         // TIME ELAPSED
         long elapsedTime = (System.nanoTime() - gamePanel.levelStartTime) / 1_000_000_000;
         text = "TIME: " + elapsedTime;
         x = gamePanel.tileSize;
-        drawStringAndShadowForText(text, x, y, 3, Color.black);
+        drawTextAndShadow(text, x, y, 3, Color.black);
 
         // DEBUG MODE
         if (debugMode) {
@@ -126,7 +129,42 @@ public class UserInterface {
         }
     }
 
-    private void drawStringAndShadowForText(String text, int x, int y, int offset, Color shadowColor) {
+    private void drawGameOverScreen() {
+        graphics2D.setColor(new Color(0, 0, 0, 150));
+        graphics2D.fillRect(0, 0, gamePanel.screenWidth, gamePanel.screenHeight);
+
+        int x;
+        int y;
+        String text;
+
+        graphics2D.setFont(gameOverFont);
+        text = "Game Over";
+        x = getXforCenteredText(text);
+        y = 3 * gamePanel.tileSize;
+        drawTextAndShadow(text, x, y, 4, Color.black);
+
+        // Retry
+        graphics2D.setFont(menuFont);
+        text = "Retry";
+        x = getXforCenteredText(text);
+        y += 3 * gamePanel.tileSize;
+        graphics2D.drawString(text, x, y);
+        if (commandNum == 0) {
+            graphics2D.drawString(">", x - gamePanel.tileSize, y);
+        }
+
+        // Quit
+        graphics2D.setFont(menuFont);
+        text = "Quit";
+        x = getXforCenteredText(text);
+        y += gamePanel.tileSize;
+        graphics2D.drawString(text, x, y);
+        if (commandNum == 1) {
+            graphics2D.drawString(">", x - gamePanel.tileSize, y);
+        }
+    }
+
+    private void drawTextAndShadow(String text, int x, int y, int offset, Color shadowColor) {
         graphics2D.setColor(shadowColor);
         graphics2D.drawString(text, x + offset, y + offset);
         graphics2D.setColor(Color.WHITE);

@@ -57,10 +57,31 @@ public class Player extends Entity implements UpdatableObserver {
         this.isMoving = false;
         this.direction = Direction.DOWN;
         this.lastDirection = Direction.DOWN;
-        this.maxLife = 2;
+        this.maxLife = 3;
         this.life = this.maxLife;
         this.explosiveRangeBonus = 0;
         this.isPlayer = true;
+    }
+
+    public void setDefaultPositions() {
+        this.worldX = gamePanel.tileSize;
+        this.worldY = gamePanel.tileSize;
+        this.isMoving = false;
+        this.direction = Direction.DOWN;
+        this.lastDirection = Direction.DOWN;
+    }
+
+    public void resetPlayerVariables() {
+        this.speed = 4;
+        this.maxLife = 3;
+        this.life = this.maxLife;
+        this.explosiveRangeBonus = 0;
+        this.isPlayer = true;
+        this.collisionOn = false;
+        this.invincible = false;
+        this.alive = true;
+        this.dying = false;
+        this.invincibleCounter = 0;
     }
 
     private void loadPlayerSprites() {
@@ -183,6 +204,11 @@ public class Player extends Entity implements UpdatableObserver {
                 invincibleCounter = 0;
                 invincible = false;
             }
+        }
+
+        if (life < 0) {
+            gamePanel.gameState = gamePanel.gameOverState;
+            gamePanel.playSE(4);
         }
     }
 

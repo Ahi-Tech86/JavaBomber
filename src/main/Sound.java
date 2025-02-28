@@ -15,6 +15,7 @@ public class Sound {
         soundURL[1] = getClass().getResource("/sound/wick_burning.wav");
         soundURL[2] = getClass().getResource("/sound/pick_up.wav");
         soundURL[3] = getClass().getResource("/sound/orb.wav");
+        soundURL[4] = getClass().getResource("/sound/gameover.wav");
     }
 
     public void setFile(int i) {

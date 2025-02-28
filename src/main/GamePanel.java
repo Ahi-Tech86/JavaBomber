@@ -60,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int gameOverState = 3;
 
     private final Comparator<GameObject> gameObjectComparator = new Comparator<GameObject>() {
         @Override
@@ -133,6 +134,39 @@ public class GamePanel extends JPanel implements Runnable, Subject {
         }
 
         levelStartTime = System.nanoTime();
+        enemiesNumbers = (int) enemiesList.stream().filter(Objects::nonNull).count();
+    }
+
+    public void retryGame() {
+        player.setDefaultPositions();
+        player.resetPlayerVariables();
+        enemiesList.clear();
+        assetSetter.setEnemies();
+        for (Entity enemy : enemiesList) {
+            addObserver(enemy);
+        }
+        enemiesNumbers = (int) enemiesList.stream().filter(Objects::nonNull).count();
+    }
+
+    public void restartGame() {
+        this.levelStartTime = System.nanoTime();
+        player.setDefaultPositions();
+        player.resetPlayerVariables();
+        enemiesList.clear();
+        objectsList.clear();
+        interactiveTileList.clear();
+        assetSetter.setObjects();
+        assetSetter.setEnemies();
+        assetSetter.setInteractiveTiles();
+
+        for (Entity enemy : enemiesList) {
+            addObserver(enemy);
+        }
+
+        for (InteractiveTile iTile : interactiveTileList) {
+            addObserver(iTile);
+        }
+
         enemiesNumbers = (int) enemiesList.stream().filter(Objects::nonNull).count();
     }
 

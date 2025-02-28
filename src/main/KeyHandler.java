@@ -48,6 +48,30 @@ public class KeyHandler implements KeyListener {
                     }
                 }
             }
+        } else if (gamePanel.gameState == gamePanel.gameOverState) {
+            switch (code) {
+                case KeyEvent.VK_W -> {
+                    gamePanel.userInterface.commandNum--;
+                    if (gamePanel.userInterface.commandNum < 0) {
+                        gamePanel.userInterface.commandNum = 1;
+                    }
+                }
+                case KeyEvent.VK_S -> {
+                    gamePanel.userInterface.commandNum++;
+                    if (gamePanel.userInterface.commandNum > 1) {
+                        gamePanel.userInterface.commandNum = 0;
+                    }
+                }
+                case KeyEvent.VK_ENTER -> {
+                    if (gamePanel.userInterface.commandNum == 0) {
+                        gamePanel.gameState = gamePanel.playState;
+                        gamePanel.retryGame();
+                    } else if (gamePanel.userInterface.commandNum == 1) {
+                        gamePanel.gameState = gamePanel.titleState;
+                        gamePanel.restartGame();
+                    }
+                }
+            }
         } else {
             switch (code) {
                 case KeyEvent.VK_E -> ePressed = true;
