@@ -12,7 +12,7 @@ public class ExplosiveEntity extends GameObject implements UpdatableObserver {
     public GamePanel gamePanel;
 
     public boolean isExploded;
-    protected byte explosionArea;
+    public byte explosionArea;
     protected int explosionTimer;
 
     protected int spriteNum = 1;

@@ -23,6 +23,8 @@ public class Player extends Entity implements UpdatableObserver {
     private int throwCooldown;
     private int throwCounter;
 
+    public int explosiveRangeBonus;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(gamePanel, gamePanel.tileSize, gamePanel.tileSize);
         this.gamePanel = gamePanel;
@@ -57,6 +59,7 @@ public class Player extends Entity implements UpdatableObserver {
         this.lastDirection = Direction.DOWN;
         this.maxLife = 2;
         this.life = this.maxLife;
+        this.explosiveRangeBonus = 0;
         this.isPlayer = true;
     }
 
@@ -76,6 +79,10 @@ public class Player extends Entity implements UpdatableObserver {
         if (index != 999) {
             if (gamePanel.objectsList.get(index).name.equals("Key")) {
                 gamePanel.objectsList.remove(index);
+                gamePanel.playSE(2);
+            } else if (gamePanel.objectsList.get(index).name.equals("Explosion Range Bonus")) {
+                gamePanel.objectsList.remove(index);
+                explosiveRangeBonus++;
                 gamePanel.playSE(2);
             }
         }
@@ -97,7 +104,7 @@ public class Player extends Entity implements UpdatableObserver {
         }
 
         if (keyHandler.ePressed && throwCounter == 0) {
-            DynamitePack dynamitePack = new DynamitePack(this.worldX, this.worldY, gamePanel);
+            DynamitePack dynamitePack = new DynamitePack(this.worldX, this.worldY, gamePanel, explosiveRangeBonus);
             gamePanel.explosiveEntityList.add(dynamitePack);
             gamePanel.addObserver(dynamitePack);
             gamePanel.playSE(1);
@@ -139,14 +146,7 @@ public class Player extends Entity implements UpdatableObserver {
             // CHECK INTERACTIVE TILES
             gamePanel.collisionChecker.checkInteractiveTiles(this, (ArrayList<InteractiveTile>) gamePanel.interactiveTileList);
 
-            if (!collisionOn) {
-                switch (direction) {
-                    case UP -> worldY -= speed;
-                    case DOWN -> worldY += speed;
-                    case LEFT -> worldX -= speed;
-                    case RIGHT -> worldX += speed;
-                }
-            }
+            updatePosition();
 
             spriteCounter++;
             if (spriteCounter > 10) {

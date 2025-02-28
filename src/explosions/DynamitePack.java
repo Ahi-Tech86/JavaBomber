@@ -7,9 +7,9 @@ import java.awt.image.BufferedImage;
 
 public class DynamitePack extends ExplosiveEntity {
 
-    public DynamitePack(int worldX, int worldY, GamePanel gamePanel) {
+    public DynamitePack(int worldX, int worldY, GamePanel gamePanel, int explosiveRangeBonus) {
         super(worldX, worldY, gamePanel);
-        this.explosionArea = 2;
+        this.explosionArea = (byte) (2 + explosiveRangeBonus);
         this.explosionTimer = 90;
         this.isExploded = false;
         this.explosionFrames = new BufferedImage[]{

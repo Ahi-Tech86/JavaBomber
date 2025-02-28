@@ -1,6 +1,7 @@
 package main;
 
 import entities.BirdEnemy;
+import objects.ExplosionRangeBonus;
 import objects.Key;
 import tile_interactive.DestructibleWall;
 
@@ -14,6 +15,8 @@ public class AssetSetter {
 
     public void setObjects() {
         gamePanel.objectsList.add(new Key(gamePanel, gamePanel.tileSize, 5 * gamePanel.tileSize));
+        gamePanel.objectsList.add(new ExplosionRangeBonus(gamePanel, gamePanel.tileSize, 8 * gamePanel.tileSize));
+        gamePanel.objectsList.add(new ExplosionRangeBonus(gamePanel, gamePanel.tileSize, 10 * gamePanel.tileSize));
     }
 
     public void setEnemies() {
@@ -26,6 +29,7 @@ public class AssetSetter {
     }
 
     public void setInteractiveTiles() {
+        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, gamePanel.tileSize, 5 * gamePanel.tileSize));
         gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 1 * gamePanel.tileSize));
         gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 2 * gamePanel.tileSize));
         gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 3 * gamePanel.tileSize));

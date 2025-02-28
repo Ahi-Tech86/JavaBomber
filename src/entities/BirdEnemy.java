@@ -114,17 +114,6 @@ public class BirdEnemy extends Entity {
         }
     }
 
-    private void updatePosition() {
-        if (!collisionOn && !dying) {
-            switch (direction) {
-                case UP -> worldY -= speed;
-                case DOWN -> worldY += speed;
-                case LEFT -> worldX -= speed;
-                case RIGHT -> worldX += speed;
-            }
-        }
-    }
-
     private void updateSprites() {
         spriteCounter++;
         if (spriteCounter > 10) {

@@ -71,6 +71,17 @@ public class Entity extends GameObject implements UpdatableObserver {
         return image;
     }
 
+    protected void updatePosition() {
+        if (!collisionOn && !dying) {
+            switch (direction) {
+                case UP -> worldY -= speed;
+                case DOWN -> worldY += speed;
+                case LEFT -> worldX -= speed;
+                case RIGHT -> worldX += speed;
+            }
+        }
+    }
+
     @Override
     public void update() {
     }
