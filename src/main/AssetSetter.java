@@ -13,7 +13,7 @@ public class AssetSetter {
     }
 
     public void setObjects() {
-        gamePanel.objectsList.add(new Key(gamePanel.tileSize, 5 * gamePanel.tileSize));
+        gamePanel.objectsList.add(new Key(gamePanel, gamePanel.tileSize, 5 * gamePanel.tileSize));
     }
 
     public void setEnemies() {
@@ -37,7 +37,5 @@ public class AssetSetter {
         gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 9 * gamePanel.tileSize));
         gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 10 * gamePanel.tileSize));
         gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 11 * gamePanel.tileSize));
-        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 12 * gamePanel.tileSize));
-        gamePanel.interactiveTileList.add(new DestructibleWall(gamePanel, 3 * gamePanel.tileSize, 13 * gamePanel.tileSize));
     }
 }

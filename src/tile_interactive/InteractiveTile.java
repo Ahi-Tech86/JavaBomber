@@ -7,18 +7,15 @@ import observer.UpdatableObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class InteractiveTile extends GameObject implements UpdatableObserver {
 
     GamePanel gamePanel;
 
-    public boolean destructed = false;
     protected BufferedImage image;
-    public boolean destructible = false;
 
     public InteractiveTile(GamePanel gamePanel, int worldX, int worldY) {
-        super(worldX, worldY);
+        super(gamePanel, worldX, worldY);
         this.gamePanel = gamePanel;
     }
 
@@ -31,12 +28,7 @@ public class InteractiveTile extends GameObject implements UpdatableObserver {
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
-        if (
-                worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
-                worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-                worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
-                worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY
-        ) {
+        if (isOnScreen()) {
             graphics2D.drawImage(image, screenX, screenY, null);
         }
     }

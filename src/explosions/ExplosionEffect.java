@@ -26,7 +26,7 @@ public class ExplosionEffect extends GameObject implements UpdatableObserver {
     public int solidAreaDefaultX, solidAreaDefaultY;
 
     public ExplosionEffect(GamePanel gamePanel, int worldX, int worldY) {
-        super(worldX, worldY);
+        super(gamePanel, worldX, worldY);
         this.gamePanel = gamePanel;
         this.worldX = worldX;
         this.worldY = worldY;
@@ -83,12 +83,7 @@ public class ExplosionEffect extends GameObject implements UpdatableObserver {
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
-        if (
-                worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
-                        worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-                        worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
-                        worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY
-        ) {
+        if (isOnScreen()) {
             graphics2D.drawImage(image, screenX, screenY, null);
         }
     }

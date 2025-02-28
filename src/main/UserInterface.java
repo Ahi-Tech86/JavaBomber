@@ -95,7 +95,7 @@ public class UserInterface {
         drawStringAndShadowForText(text, x, y, 3, Color.black);
 
         // HOW MANY ENEMIES LEFT
-        text = "LEFT: " + gamePanel.enemiesList.stream().filter(Objects::nonNull).count();
+        text = "LEFT: " + gamePanel.enemiesNumbers;
         x = gamePanel.tileSize * 13;
         drawStringAndShadowForText(text, x, y, 3, Color.black);
 

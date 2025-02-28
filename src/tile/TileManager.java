@@ -21,13 +21,13 @@ public class TileManager {
         mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
 
         getTileImage();
-        loadMap("/maps/map0.txt");
+        loadMap("/maps/map2");
     }
 
     private void getTileImage() {
-        setup(0, "/tileset/grass.png", false);
-        setup(1, "/tileset/dark_wall.png", true);
-        setup(2, "/tileset/dark_wall_broken_3.png", true);
+        setup(1, "/tileset/grass.png", false);
+        setup(0, "/tileset/dark_wall.png", true);
+        setup(2, "/interactive_tiles/dark_wall_broken_3.png", true);
     }
 
     private void setup(int index, String imagePath, boolean collision) {

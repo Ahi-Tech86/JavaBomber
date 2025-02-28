@@ -12,13 +12,15 @@ import java.util.Random;
 
 public class BirdEnemy extends Entity {
 
+    Random random;
     GamePanel gamePanel;
 
     private int actionLockCounter;
 
     public BirdEnemy(GamePanel gamePanel, int worldX, int worldY) {
-        super(worldX, worldY);
+        super(gamePanel, worldX, worldY);
         this.gamePanel = gamePanel;
+        this.random = new Random();
 
         solidArea = new Rectangle();
         solidArea.x = 16;
@@ -41,69 +43,57 @@ public class BirdEnemy extends Entity {
     }
 
     private void loadBirdSprites() {
-        Random random = new Random();
         boolean isWhiteBird = random.nextBoolean();
+        String birdType = isWhiteBird ? "bird_white" : "bird_blue";
+        loadSprites(birdType);
+    }
 
-        if (isWhiteBird) {
-            idleUp = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/idle/idle_up", 4, gamePanel.tileSize, gamePanel.tileSize);
-            idleDown = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/idle/idle_down", 4, gamePanel.tileSize, gamePanel.tileSize);
-            idleLeft = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/idle/idle_left", 4, gamePanel.tileSize, gamePanel.tileSize);
-            idleRight = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/idle/idle_right", 4, gamePanel.tileSize, gamePanel.tileSize);
+    private void loadSprites(String birdType) {
+        idleUp = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/idle/idle_up", 4, gamePanel.tileSize, gamePanel.tileSize);
+        idleDown = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/idle/idle_down", 4, gamePanel.tileSize, gamePanel.tileSize);
+        idleLeft = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/idle/idle_left", 4, gamePanel.tileSize, gamePanel.tileSize);
+        idleRight = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/idle/idle_right", 4, gamePanel.tileSize, gamePanel.tileSize);
 
-            walkUp = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/walk/walk_up", 8, gamePanel.tileSize, gamePanel.tileSize);
-            walkDown = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/walk/walk_down", 8, gamePanel.tileSize, gamePanel.tileSize);
-            walkLeft = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/walk/walk_left", 8, gamePanel.tileSize, gamePanel.tileSize);
-            walkRight = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_white/walk/walk_right", 8, gamePanel.tileSize, gamePanel.tileSize);
+        walkUp = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/walk/walk_up", 8, gamePanel.tileSize, gamePanel.tileSize);
+        walkDown = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/walk/walk_down", 8, gamePanel.tileSize, gamePanel.tileSize);
+        walkLeft = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/walk/walk_left", 8, gamePanel.tileSize, gamePanel.tileSize);
+        walkRight = SpriteManager.loadAndScaleSpriteFrames("/enemies/" + birdType + "/walk/walk_right", 8, gamePanel.tileSize, gamePanel.tileSize);    }
+
+    private void setDirection(int i) {
+        if (i <= 25) {
+            direction = Direction.UP;
+            lastDirection = Direction.UP;
+        } else if (i < 50) {
+            direction = Direction.DOWN;
+            lastDirection = Direction.DOWN;
+        } else if (i < 75) {
+            direction = Direction.LEFT;
+            lastDirection = Direction.LEFT;
         } else {
-            idleUp = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/idle/idle_up", 4, gamePanel.tileSize, gamePanel.tileSize);
-            idleDown = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/idle/idle_down", 4, gamePanel.tileSize, gamePanel.tileSize);
-            idleLeft = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/idle/idle_left", 4, gamePanel.tileSize, gamePanel.tileSize);
-            idleRight = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/idle/idle_right", 4, gamePanel.tileSize, gamePanel.tileSize);
-
-            walkUp = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/walk/walk_up", 8, gamePanel.tileSize, gamePanel.tileSize);
-            walkDown = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/walk/walk_down", 8, gamePanel.tileSize, gamePanel.tileSize);
-            walkLeft = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/walk/walk_left", 8, gamePanel.tileSize, gamePanel.tileSize);
-            walkRight = SpriteManager.loadAndScaleSpriteFrames("/enemies/bird_blue/walk/walk_right", 8, gamePanel.tileSize, gamePanel.tileSize);
+            direction = Direction.RIGHT;
+            lastDirection = Direction.RIGHT;
         }
-
     }
 
     private void setAction() {
         actionLockCounter++;
 
         if (actionLockCounter == 150) {
-            Random random = new Random();
             int i = random.nextInt(100) + 1;
-
-            if (i <= 25) {
-                direction = Direction.UP;
-                lastDirection = Direction.UP;
-            } else if (i < 50) {
-                direction = Direction.DOWN;
-                lastDirection = Direction.DOWN;
-            } else if (i < 75) {
-                direction = Direction.LEFT;
-                lastDirection = Direction.LEFT;
-            } else {
-                direction = Direction.RIGHT;
-                lastDirection = Direction.RIGHT;
-            }
-
+            setDirection(i);
             actionLockCounter = 0;
         }
     }
 
-    @Override
-    public void update() {
-        if (!alive) {
-            gamePanel.player.points += 400;
-            gamePanel.playSE(3);
-            gamePanel.removeObserver(this);
-            gamePanel.enemiesList.remove(this);
-        }
+    private void handleDeath() {
+        gamePanel.player.points += 400;
+        gamePanel.playSE(3);
+        gamePanel.removeObserver(this);
+        gamePanel.enemiesList.remove(this);
+        gamePanel.enemiesNumbers--;
+    }
 
-        setAction();
-
+    private void checkCollisions() {
         collisionOn = false;
         gamePanel.collisionChecker.checkTile(this);
         gamePanel.collisionChecker.checkObject(this, false);
@@ -122,7 +112,9 @@ public class BirdEnemy extends Entity {
                 gamePanel.player.invincible = true;
             }
         }
+    }
 
+    private void updatePosition() {
         if (!collisionOn && !dying) {
             switch (direction) {
                 case UP -> worldY -= speed;
@@ -131,7 +123,9 @@ public class BirdEnemy extends Entity {
                 case RIGHT -> worldX += speed;
             }
         }
+    }
 
+    private void updateSprites() {
         spriteCounter++;
         if (spriteCounter > 10) {
             spriteNum++;
@@ -150,26 +144,20 @@ public class BirdEnemy extends Entity {
     }
 
     @Override
-    public void draw(Graphics2D graphics2D, GamePanel gamePanel) {
-        BufferedImage image = null;
-
-        if (isMoving) {
-            switch (direction) {
-                case Direction.UP -> image = walkUp[spriteNum - 1];
-                case Direction.DOWN -> image = walkDown[spriteNum - 1];
-                case Direction.LEFT -> image = walkLeft[spriteNum - 1];
-                case Direction.RIGHT -> image = walkRight[spriteNum - 1];
-            }
-
-        } else {
-            switch (lastDirection) {
-                case Direction.UP -> image = idleUp[spriteNum - 1];
-                case Direction.DOWN -> image = idleDown[spriteNum - 1];
-                case Direction.LEFT -> image = idleLeft[spriteNum - 1];
-                case Direction.RIGHT -> image = idleRight[spriteNum - 1];
-            }
+    public void update() {
+        if (!alive) {
+            handleDeath();
         }
 
+        setAction();
+        checkCollisions();
+        updatePosition();
+        updateSprites();
+    }
+
+    @Override
+    public void draw(Graphics2D graphics2D, GamePanel gamePanel) {
+        BufferedImage image = getCurrentImage();
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
@@ -177,12 +165,7 @@ public class BirdEnemy extends Entity {
             dyingAnimation(graphics2D);
         }
 
-        if (
-                worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
-                worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-                worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
-                worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY)
-        {
+        if (isOnScreen()) {
             graphics2D.drawImage(image, screenX, screenY, null);
 
             // RESET ALPHA

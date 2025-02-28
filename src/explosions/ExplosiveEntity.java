@@ -20,7 +20,7 @@ public class ExplosiveEntity extends GameObject implements UpdatableObserver {
     protected BufferedImage[] explosionFrames;
 
     public ExplosiveEntity(int worldX, int worldY, GamePanel gamePanel) {
-        super(worldX, worldY);
+        super(gamePanel, worldX, worldY);
         this.gamePanel = gamePanel;
         int offset = gamePanel.tileSize / 2;
         this.worldX = ((int) ((worldX + offset) / gamePanel.tileSize)) * gamePanel.tileSize;
@@ -34,14 +34,16 @@ public class ExplosiveEntity extends GameObject implements UpdatableObserver {
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
-        graphics2D.drawImage(
-                image,
-                screenX + 8,
-                screenY + 8,
-                (gamePanel.tileSize / 2) + 16 ,
-                (gamePanel.tileSize / 2) + 16,
-                null
-        );
+        if (isOnScreen()) {
+            graphics2D.drawImage(
+                    image,
+                    screenX + 8,
+                    screenY + 8,
+                    (gamePanel.tileSize / 2) + 16 ,
+                    (gamePanel.tileSize / 2) + 16,
+                    null
+            );
+        }
     }
 
     @Override

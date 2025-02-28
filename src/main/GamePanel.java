@@ -11,9 +11,7 @@ import tile_interactive.InteractiveTile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
 
 public class GamePanel extends JPanel implements Runnable, Subject {
@@ -29,12 +27,13 @@ public class GamePanel extends JPanel implements Runnable, Subject {
     public final int screenHeight = maxScreenRow * tileSize;
 
     // WORLD SETTINGS
-    public final int maxWorldCol = 32;
-    public final int maxWorldRow = 15;
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 13;
 
     // FPS
     final int FPS = 60;
 
+    public int enemiesNumbers;
     protected long levelStartTime;
 
     // SYSTEM
@@ -134,6 +133,7 @@ public class GamePanel extends JPanel implements Runnable, Subject {
         }
 
         levelStartTime = System.nanoTime();
+        enemiesNumbers = (int) enemiesList.stream().filter(Objects::nonNull).count();
     }
 
     public void update() {

@@ -1,12 +1,14 @@
 package entities;
 
 import main.GameObject;
+import main.GamePanel;
 import observer.UpdatableObserver;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity extends GameObject implements UpdatableObserver {
+
     public int life;
     public int maxLife;
     public int speed;
@@ -42,8 +44,31 @@ public class Entity extends GameObject implements UpdatableObserver {
     public boolean dying = false;
     public int dyingCounter = 0;
 
-    public Entity(int worldX, int worldY) {
-        super(worldX, worldY);
+    public Entity(GamePanel gamePanel, int worldX, int worldY) {
+        super(gamePanel, worldX, worldY);
+    }
+
+    protected BufferedImage getCurrentImage() {
+        BufferedImage image = null;
+
+        if (isMoving) {
+            switch (direction) {
+                case Direction.UP -> image = walkUp[spriteNum - 1];
+                case Direction.DOWN -> image = walkDown[spriteNum - 1];
+                case Direction.LEFT -> image = walkLeft[spriteNum - 1];
+                case Direction.RIGHT -> image = walkRight[spriteNum - 1];
+            }
+
+        } else {
+            switch (lastDirection) {
+                case Direction.UP -> image = idleUp[spriteNum - 1];
+                case Direction.DOWN -> image = idleDown[spriteNum - 1];
+                case Direction.LEFT -> image = idleLeft[spriteNum - 1];
+                case Direction.RIGHT -> image = idleRight[spriteNum - 1];
+            }
+        }
+
+        return image;
     }
 
     @Override

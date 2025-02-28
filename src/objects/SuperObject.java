@@ -13,8 +13,8 @@ public class SuperObject extends GameObject {
     public boolean collision = false;
     protected int tileSizeHalf = 64 / 2;
 
-    public SuperObject(int worldX, int worldY) {
-        super(worldX, worldY);
+    public SuperObject(GamePanel gamePanel, int worldX, int worldY) {
+        super(gamePanel, worldX, worldY);
     }
 
     @Override
@@ -22,12 +22,7 @@ public class SuperObject extends GameObject {
         int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX;
         int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
-        if (
-                worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
-                worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
-                worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY &&
-                worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY
-        ) {
+        if (isOnScreen()) {
             graphics2D.drawImage(image, screenX + 16, screenY + 16, null);
         }
     }

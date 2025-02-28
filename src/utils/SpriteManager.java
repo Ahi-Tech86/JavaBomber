@@ -24,10 +24,7 @@ public class SpriteManager {
         Graphics2D graphics2D = scaledImage.createGraphics();
         graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-        //AffineTransform affineTransform = new AffineTransform();
-        //affineTransform.scale((double) scaleWidth / defaultImage.getWidth(), (double) scaleHeight / defaultImage.getHeight());
         graphics2D.drawImage(defaultImage, 0, 0, scaleWidth, scaleHeight, null);
-        //graphics2D.drawImage(defaultImage, affineTransform, null);
         graphics2D.dispose();
 
         return scaledImage;
@@ -83,14 +80,14 @@ public class SpriteManager {
 
     public static void main(String[] args) {
         cropAndSaveSprites(
-                loadImage("/tileset/sheets/grass.png"),
-                32,
-                32,
+                loadImage("/objects/bomb.png"),
+                16,
+                16,
                 0,
                 0,
-                1,
-                1,
-                "grass"
+                3,
+                3,
+                "bomb"
         );
     }
 }

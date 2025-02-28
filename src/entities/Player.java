@@ -24,7 +24,7 @@ public class Player extends Entity implements UpdatableObserver {
     private int throwCounter;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-        super(gamePanel.tileSize, gamePanel.tileSize);
+        super(gamePanel, gamePanel.tileSize, gamePanel.tileSize);
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
 
@@ -74,8 +74,10 @@ public class Player extends Entity implements UpdatableObserver {
 
     private void pickUpObject(int index) {
         if (index != 999) {
-            gamePanel.objectsList.remove(index);
-            gamePanel.playSE(2);
+            if (gamePanel.objectsList.get(index).name.equals("Key")) {
+                gamePanel.objectsList.remove(index);
+                gamePanel.playSE(2);
+            }
         }
     }
 
@@ -134,6 +136,7 @@ public class Player extends Entity implements UpdatableObserver {
             int enemyIndex = gamePanel.collisionChecker.checkEntity(this, (ArrayList<Entity>) gamePanel.enemiesList);
             contactWithEnemy(enemyIndex);
 
+            // CHECK INTERACTIVE TILES
             gamePanel.collisionChecker.checkInteractiveTiles(this, (ArrayList<InteractiveTile>) gamePanel.interactiveTileList);
 
             if (!collisionOn) {
@@ -185,24 +188,7 @@ public class Player extends Entity implements UpdatableObserver {
 
     @Override
     public void draw(Graphics2D graphics2D, GamePanel gamePanel) {
-        BufferedImage image = null;
-
-        if (isMoving) {
-            switch (direction) {
-                case Direction.UP -> image = walkUp[spriteNum - 1];
-                case Direction.DOWN -> image = walkDown[spriteNum - 1];
-                case Direction.LEFT -> image = walkLeft[spriteNum - 1];
-                case Direction.RIGHT -> image = walkRight[spriteNum - 1];
-            }
-
-        } else {
-            switch (lastDirection) {
-                case Direction.UP -> image = idleUp[spriteNum - 1];
-                case Direction.DOWN -> image = idleDown[spriteNum - 1];
-                case Direction.LEFT -> image = idleLeft[spriteNum - 1];
-                case Direction.RIGHT -> image = idleRight[spriteNum - 1];
-            }
-        }
+        BufferedImage image = getCurrentImage();
 
         if (invincible) {
             graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
