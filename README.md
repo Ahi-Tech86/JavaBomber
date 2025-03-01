@@ -5,7 +5,7 @@
 ## Description
 
 This project is a clone of the classic NES game Bomberman. The game was created from scratch in pure Java without using third-party libraries. The goal of the project was not only to recreate the mechanics of the original game, but also to understand the work of game engines, as well as apply the principles of OOP, class inheritance and design patterns.
-For understand in details follow by link [{#T}](docs/arch.md) 
+For a detailed explanation of the class inheritance hierarchy and descriptions of various classes, follow the  [link](docs/arch.md) 
 
 ## Main features
 
@@ -49,10 +49,8 @@ To launch the game, run the following command:
 ![Game Screen](repo_files/screenshot2.png)
 ![Game Over Screen](repo_files/screenshot3.png)
 
-<video width="1280" height="720" controls>
-    <source src="repo_files/gameplay/gameplay_video.mp4" type="video/mp4">
-</video>
+## Gameplay videos
 
-<video width="1280" height="720" controls>
-    <source src="repo_files/gameplay/gameplay_video2.mp4" type="video/mp4">
-</video>
+You can view gameplay videos by following these links:
+- [Gameplay video 1](repo_files/gameplay/gameplay_video.mp4)
+- [Gameplay video 2](repo_files/gameplay/gameplay_video2.mp4)
